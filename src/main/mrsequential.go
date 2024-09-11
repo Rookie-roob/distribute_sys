@@ -7,7 +7,7 @@ package main
 //
 
 import "fmt"
-import "../mr"
+import "github.com/Rookie-roob/6.824/src/mr"
 import "plugin"
 import "os"
 import "log"
