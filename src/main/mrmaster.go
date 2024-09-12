@@ -9,10 +9,13 @@ package main
 // Please do not change this file.
 //
 
-import "../mr"
-import "time"
-import "os"
-import "fmt"
+import (
+	"fmt"
+	"os"
+	"time"
+
+	"github.com/Rookie-roob/6.824/src/mr"
+)
 
 func main() {
 	if len(os.Args) < 2 {
@@ -20,6 +23,8 @@ func main() {
 		os.Exit(1)
 	}
 
+	// in lab1, master is supposed not to be dead accidentally. It is dead only after it finishes all the task.
+	// in real world, there will be replicas
 	m := mr.MakeMaster(os.Args[1:], 10)
 	for m.Done() == false {
 		time.Sleep(time.Second)
