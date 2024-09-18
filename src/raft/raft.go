@@ -318,6 +318,11 @@ func (rf *Raft) sendRequestVote(server int, args *RequestVoteArgs, reply *Reques
 		return false
 	}
 	for {
+		// this operation is very important!!!
+		// without it cpu time will be consumed out
+		if rf.killed() {
+			return false
+		}
 		ok := rf.peers[server].Call("Raft.RequestVote", args, reply)
 		if ok {
 			break
@@ -399,7 +404,7 @@ func (rf *Raft) Start(command interface{}) (int, int, bool) {
 	index = len(rf.logs) + rf.lastIncludedIndex
 	term = rf.currentTerm
 	rf.persist()
-	// DPrintf("server[%d] get a command, the log index is %d, the log term is %d", rf.me, index, rf.currentTerm)
+	//DPrintf("server[%d] get a command, the log index is %d, the log term is %d", rf.me, index, rf.currentTerm)
 	rf.mu.Unlock()
 	return index, term, isLeader
 }
@@ -595,7 +600,9 @@ func (rf *Raft) AppendEntries(args *AppendEntriesArgs, reply *AppendEntriesReply
 			DPrintf("args.PrevLogIndex : %d, args.PrevLogTerm: %d", args.PrevLogIndex, args.PrevLogTerm)
 			if args.PrevLogIndex >= rf.lastIncludedIndex+len(rf.logs)+1 {
 				DPrintf("receiver do not have such log in that index")
-			} else if len(rf.logs) > 0 {
+			} else if args.PrevLogIndex == rf.lastIncludedIndex {
+				DPrintf("receiver relevant log term: from the beggining")
+			} else {
 				DPrintf("receiver relevant log term: %d", rf.logs[args.PrevLogIndex-rf.lastIncludedIndex-1].Term)
 			}
 		}
@@ -678,6 +685,12 @@ func (rf *Raft) sendAppendEntries(server int, args *AppendEntriesArgs, reply *Ap
 		return false
 	}
 	for {
+		// this operation is very important!!!
+		// without it cpu time will be consumed out
+		if rf.killed() {
+			return false
+		}
+
 		ok := rf.peers[server].Call("Raft.AppendEntries", args, reply)
 		if ok {
 			break
@@ -714,6 +727,7 @@ func (rf *Raft) sendAppendEntries(server int, args *AppendEntriesArgs, reply *Ap
 			return false
 		}
 		if reply.AppendEntriesError == AppendEntriesError_Killed {
+			rf.mu.Unlock()
 			return false
 		} else if reply.AppendEntriesError == AppendEntriesError_TermOutDate {
 			rf.state = FOLLOWER
@@ -798,10 +812,7 @@ func (rf *Raft) sendAppendEntries(server int, args *AppendEntriesArgs, reply *Ap
 
 // check if time out
 func (rf *Raft) ticker() {
-	for {
-		if rf.killed() {
-			break
-		}
+	for rf.killed() == false {
 		select {
 		case <-rf.timer.C:
 			if rf.killed() {

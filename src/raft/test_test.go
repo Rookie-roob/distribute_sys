@@ -374,9 +374,9 @@ func TestBackup2B(t *testing.T) {
 	defer cfg.cleanup()
 
 	cfg.begin("Test (2B): leader backs up quickly over incorrect follower logs")
-	// DPrintf("1234567")
+	//DPrintf("1234567")
 	cfg.one(rand.Int(), servers, true)
-	// DPrintf("0000000000000")
+	//DPrintf("0000000000000")
 	// put leader and one follower in a partition
 	leader1 := cfg.checkOneLeader()
 	cfg.disconnect((leader1 + 2) % servers)
@@ -397,12 +397,12 @@ func TestBackup2B(t *testing.T) {
 	cfg.connect((leader1 + 2) % servers)
 	cfg.connect((leader1 + 3) % servers)
 	cfg.connect((leader1 + 4) % servers)
-	// DPrintf("-1-1-1-1-1")
+	//DPrintf("-1-1-1-1-1")
 	// lots of successful commands to new group.
 	for i := 0; i < 50; i++ {
 		cfg.one(rand.Int(), 3, true)
 	}
-	// DPrintf("1111111")
+	//DPrintf("1111111")
 	// now another partitioned leader and one follower
 	leader2 := cfg.checkOneLeader()
 	other := (leader1 + 2) % servers
