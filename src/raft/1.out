@@ -1,0 +1,1170 @@
+Test (2B): leader backs up quickly over incorrect follower logs ...
+2024/09/18 20:55:15 we send the value: 6666874182703706781
+2024/09/18 20:55:15 server[3] get a command, the log index is 1, the log term is 1
+2024/09/18 20:55:15 server[4] reveive a correct message from server[3]
+2024/09/18 20:55:15 args.PrevLogIndex : 0, args.PrevLogTerm: 0
+2024/09/18 20:55:15 server[1] reveive a correct message from server[3]
+2024/09/18 20:55:15 args.PrevLogIndex : 0, args.PrevLogTerm: 0
+2024/09/18 20:55:15 server[0] reveive a correct message from server[3]
+2024/09/18 20:55:15 args.PrevLogIndex : 0, args.PrevLogTerm: 0
+2024/09/18 20:55:15 server[2] reveive a correct message from server[3]
+2024/09/18 20:55:15 args.PrevLogIndex : 0, args.PrevLogTerm: 0
+2024/09/18 20:55:15 leader is 3, its current commitIndex is : 1
+2024/09/18 20:55:15 we commit the value: 6666874182703706781
+2024/09/18 20:55:16 server[3] get a command, the log index is 2, the log term is 1
+2024/09/18 20:55:16 server[3] get a command, the log index is 3, the log term is 1
+2024/09/18 20:55:16 server[3] get a command, the log index is 4, the log term is 1
+2024/09/18 20:55:16 server[3] get a command, the log index is 5, the log term is 1
+2024/09/18 20:55:16 server[3] get a command, the log index is 6, the log term is 1
+2024/09/18 20:55:16 server[3] get a command, the log index is 7, the log term is 1
+2024/09/18 20:55:16 server[3] get a command, the log index is 8, the log term is 1
+2024/09/18 20:55:16 server[3] get a command, the log index is 9, the log term is 1
+2024/09/18 20:55:16 server[3] get a command, the log index is 10, the log term is 1
+2024/09/18 20:55:16 server[3] get a command, the log index is 11, the log term is 1
+2024/09/18 20:55:16 server[3] get a command, the log index is 12, the log term is 1
+2024/09/18 20:55:16 server[3] get a command, the log index is 13, the log term is 1
+2024/09/18 20:55:16 server[3] get a command, the log index is 14, the log term is 1
+2024/09/18 20:55:16 server[3] get a command, the log index is 15, the log term is 1
+2024/09/18 20:55:16 server[3] get a command, the log index is 16, the log term is 1
+2024/09/18 20:55:16 server[3] get a command, the log index is 17, the log term is 1
+2024/09/18 20:55:16 server[3] get a command, the log index is 18, the log term is 1
+2024/09/18 20:55:16 server[3] get a command, the log index is 19, the log term is 1
+2024/09/18 20:55:16 server[3] get a command, the log index is 20, the log term is 1
+2024/09/18 20:55:16 server[3] get a command, the log index is 21, the log term is 1
+2024/09/18 20:55:16 server[3] get a command, the log index is 22, the log term is 1
+2024/09/18 20:55:16 server[3] get a command, the log index is 23, the log term is 1
+2024/09/18 20:55:16 server[3] get a command, the log index is 24, the log term is 1
+2024/09/18 20:55:16 server[3] get a command, the log index is 25, the log term is 1
+2024/09/18 20:55:16 server[3] get a command, the log index is 26, the log term is 1
+2024/09/18 20:55:16 server[3] get a command, the log index is 27, the log term is 1
+2024/09/18 20:55:16 server[3] get a command, the log index is 28, the log term is 1
+2024/09/18 20:55:16 server[3] get a command, the log index is 29, the log term is 1
+2024/09/18 20:55:16 server[3] get a command, the log index is 30, the log term is 1
+2024/09/18 20:55:16 server[3] get a command, the log index is 31, the log term is 1
+2024/09/18 20:55:16 server[3] get a command, the log index is 32, the log term is 1
+2024/09/18 20:55:16 server[3] get a command, the log index is 33, the log term is 1
+2024/09/18 20:55:16 server[3] get a command, the log index is 34, the log term is 1
+2024/09/18 20:55:16 server[3] get a command, the log index is 35, the log term is 1
+2024/09/18 20:55:16 server[3] get a command, the log index is 36, the log term is 1
+2024/09/18 20:55:16 server[3] get a command, the log index is 37, the log term is 1
+2024/09/18 20:55:16 server[3] get a command, the log index is 38, the log term is 1
+2024/09/18 20:55:16 server[3] get a command, the log index is 39, the log term is 1
+2024/09/18 20:55:16 server[3] get a command, the log index is 40, the log term is 1
+2024/09/18 20:55:16 server[3] get a command, the log index is 41, the log term is 1
+2024/09/18 20:55:16 server[3] get a command, the log index is 42, the log term is 1
+2024/09/18 20:55:16 server[3] get a command, the log index is 43, the log term is 1
+2024/09/18 20:55:16 server[3] get a command, the log index is 44, the log term is 1
+2024/09/18 20:55:16 server[3] get a command, the log index is 45, the log term is 1
+2024/09/18 20:55:16 server[3] get a command, the log index is 46, the log term is 1
+2024/09/18 20:55:16 server[3] get a command, the log index is 47, the log term is 1
+2024/09/18 20:55:16 server[3] get a command, the log index is 48, the log term is 1
+2024/09/18 20:55:16 server[3] get a command, the log index is 49, the log term is 1
+2024/09/18 20:55:16 server[3] get a command, the log index is 50, the log term is 1
+2024/09/18 20:55:16 server[3] get a command, the log index is 51, the log term is 1
+2024/09/18 20:55:16 server[4] reveive a correct message from server[3]
+2024/09/18 20:55:16 args.PrevLogIndex : 1, args.PrevLogTerm: 1
+2024/09/18 20:55:16 receiver relevant log term: 1
+2024/09/18 20:55:16 we send the value: 423922236534736672
+2024/09/18 20:55:16 server[2] get a command, the log index is 2, the log term is 4
+2024/09/18 20:55:16 server[0] reveive a correct message from server[2]
+2024/09/18 20:55:16 args.PrevLogIndex : 1, args.PrevLogTerm: 1
+2024/09/18 20:55:16 receiver relevant log term: 1
+2024/09/18 20:55:16 server[1] reveive a correct message from server[2]
+2024/09/18 20:55:16 args.PrevLogIndex : 1, args.PrevLogTerm: 1
+2024/09/18 20:55:16 receiver relevant log term: 1
+2024/09/18 20:55:16 leader is 2, its current commitIndex is : 2
+2024/09/18 20:55:17 we commit the value: 423922236534736672
+2024/09/18 20:55:17 we send the value: 6321499233642868985
+2024/09/18 20:55:17 server[2] get a command, the log index is 3, the log term is 4
+2024/09/18 20:55:17 server[1] reveive a correct message from server[2]
+2024/09/18 20:55:17 server[0] reveive a correct message from server[2]
+2024/09/18 20:55:17 args.PrevLogIndex : 2, args.PrevLogTerm: 4
+2024/09/18 20:55:17 receiver relevant log term: 4
+2024/09/18 20:55:17 args.PrevLogIndex : 2, args.PrevLogTerm: 4
+2024/09/18 20:55:17 receiver relevant log term: 4
+2024/09/18 20:55:17 leader is 2, its current commitIndex is : 3
+2024/09/18 20:55:17 we commit the value: 6321499233642868985
+2024/09/18 20:55:17 we send the value: 5866208443869667509
+2024/09/18 20:55:17 server[2] get a command, the log index is 4, the log term is 4
+2024/09/18 20:55:17 server[0] reveive a correct message from server[2]
+2024/09/18 20:55:17 args.PrevLogIndex : 3, args.PrevLogTerm: 4
+2024/09/18 20:55:17 receiver relevant log term: 4
+2024/09/18 20:55:17 server[1] reveive a correct message from server[2]
+2024/09/18 20:55:17 args.PrevLogIndex : 3, args.PrevLogTerm: 4
+2024/09/18 20:55:17 receiver relevant log term: 4
+2024/09/18 20:55:17 leader is 2, its current commitIndex is : 4
+2024/09/18 20:55:17 we commit the value: 5866208443869667509
+2024/09/18 20:55:17 we send the value: 1899063324636583018
+2024/09/18 20:55:17 server[2] get a command, the log index is 5, the log term is 4
+2024/09/18 20:55:17 server[1] reveive a correct message from server[2]
+2024/09/18 20:55:17 args.PrevLogIndex : 4, args.PrevLogTerm: 4
+2024/09/18 20:55:17 receiver relevant log term: 4
+2024/09/18 20:55:17 server[0] reveive a correct message from server[2]
+2024/09/18 20:55:17 args.PrevLogIndex : 4, args.PrevLogTerm: 4
+2024/09/18 20:55:17 receiver relevant log term: 4
+2024/09/18 20:55:17 leader is 2, its current commitIndex is : 5
+2024/09/18 20:55:17 we commit the value: 1899063324636583018
+2024/09/18 20:55:17 we send the value: 7580927668150795834
+2024/09/18 20:55:17 server[2] get a command, the log index is 6, the log term is 4
+2024/09/18 20:55:18 server[0] reveive a correct message from server[2]
+2024/09/18 20:55:18 args.PrevLogIndex : 5, args.PrevLogTerm: 4
+2024/09/18 20:55:18 receiver relevant log term: 4
+2024/09/18 20:55:18 server[1] reveive a correct message from server[2]
+2024/09/18 20:55:18 args.PrevLogIndex : 5, args.PrevLogTerm: 4
+2024/09/18 20:55:18 receiver relevant log term: 4
+2024/09/18 20:55:18 leader is 2, its current commitIndex is : 6
+2024/09/18 20:55:18 we commit the value: 7580927668150795834
+2024/09/18 20:55:18 we send the value: 8013808190682824956
+2024/09/18 20:55:18 server[2] get a command, the log index is 7, the log term is 4
+2024/09/18 20:55:18 server[0] reveive a correct message from server[2]
+2024/09/18 20:55:18 args.PrevLogIndex : 6, args.PrevLogTerm: 4
+2024/09/18 20:55:18 receiver relevant log term: 4
+2024/09/18 20:55:18 server[1] reveive a correct message from server[2]
+2024/09/18 20:55:18 args.PrevLogIndex : 6, args.PrevLogTerm: 4
+2024/09/18 20:55:18 receiver relevant log term: 4
+2024/09/18 20:55:18 leader is 2, its current commitIndex is : 7
+2024/09/18 20:55:18 we commit the value: 8013808190682824956
+2024/09/18 20:55:18 we send the value: 3028593752964066550
+2024/09/18 20:55:18 server[2] get a command, the log index is 8, the log term is 4
+2024/09/18 20:55:18 server[1] reveive a correct message from server[2]
+2024/09/18 20:55:18 args.PrevLogIndex : 7, args.PrevLogTerm: 4
+2024/09/18 20:55:18 receiver relevant log term: 4
+2024/09/18 20:55:18 server[0] reveive a correct message from server[2]
+2024/09/18 20:55:18 args.PrevLogIndex : 7, args.PrevLogTerm: 4
+2024/09/18 20:55:18 receiver relevant log term: 4
+2024/09/18 20:55:18 leader is 2, its current commitIndex is : 8
+2024/09/18 20:55:18 we commit the value: 3028593752964066550
+2024/09/18 20:55:18 we send the value: 2308046551755975729
+2024/09/18 20:55:18 server[2] get a command, the log index is 9, the log term is 4
+2024/09/18 20:55:18 server[0] reveive a correct message from server[2]
+2024/09/18 20:55:18 args.PrevLogIndex : 8, args.PrevLogTerm: 4
+2024/09/18 20:55:18 receiver relevant log term: 4
+2024/09/18 20:55:18 server[1] reveive a correct message from server[2]
+2024/09/18 20:55:18 args.PrevLogIndex : 8, args.PrevLogTerm: 4
+2024/09/18 20:55:18 receiver relevant log term: 4
+2024/09/18 20:55:18 leader is 2, its current commitIndex is : 9
+2024/09/18 20:55:19 we commit the value: 2308046551755975729
+2024/09/18 20:55:19 we send the value: 9132483270207345259
+2024/09/18 20:55:19 server[2] get a command, the log index is 10, the log term is 4
+2024/09/18 20:55:19 server[1] reveive a correct message from server[2]
+2024/09/18 20:55:19 args.PrevLogIndex : 9, args.PrevLogTerm: 4
+2024/09/18 20:55:19 receiver relevant log term: 4
+2024/09/18 20:55:19 server[0] reveive a correct message from server[2]
+2024/09/18 20:55:19 args.PrevLogIndex : 9, args.PrevLogTerm: 4
+2024/09/18 20:55:19 receiver relevant log term: 4
+2024/09/18 20:55:19 leader is 2, its current commitIndex is : 10
+2024/09/18 20:55:19 we commit the value: 9132483270207345259
+2024/09/18 20:55:19 we send the value: 5842619032176979784
+2024/09/18 20:55:19 server[2] get a command, the log index is 11, the log term is 4
+2024/09/18 20:55:19 server[0] reveive a correct message from server[2]
+2024/09/18 20:55:19 args.PrevLogIndex : 10, args.PrevLogTerm: 4
+2024/09/18 20:55:19 receiver relevant log term: 4
+2024/09/18 20:55:19 server[1] reveive a correct message from server[2]
+2024/09/18 20:55:19 args.PrevLogIndex : 10, args.PrevLogTerm: 4
+2024/09/18 20:55:19 receiver relevant log term: 4
+2024/09/18 20:55:19 leader is 2, its current commitIndex is : 11
+2024/09/18 20:55:19 we commit the value: 5842619032176979784
+2024/09/18 20:55:19 we send the value: 2387472672571362426
+2024/09/18 20:55:19 server[2] get a command, the log index is 12, the log term is 4
+2024/09/18 20:55:19 server[1] reveive a correct message from server[2]
+2024/09/18 20:55:19 args.PrevLogIndex : 11, args.PrevLogTerm: 4
+2024/09/18 20:55:19 receiver relevant log term: 4
+2024/09/18 20:55:19 server[0] reveive a correct message from server[2]
+2024/09/18 20:55:19 args.PrevLogIndex : 11, args.PrevLogTerm: 4
+2024/09/18 20:55:19 receiver relevant log term: 4
+2024/09/18 20:55:19 leader is 2, its current commitIndex is : 12
+2024/09/18 20:55:20 we commit the value: 2387472672571362426
+2024/09/18 20:55:20 we send the value: 5262352656005745817
+2024/09/18 20:55:20 server[2] get a command, the log index is 13, the log term is 4
+2024/09/18 20:55:20 server[1] reveive a correct message from server[2]
+2024/09/18 20:55:20 args.PrevLogIndex : 12, args.PrevLogTerm: 4
+2024/09/18 20:55:20 receiver relevant log term: 4
+2024/09/18 20:55:20 server[0] reveive a correct message from server[2]
+2024/09/18 20:55:20 args.PrevLogIndex : 12, args.PrevLogTerm: 4
+2024/09/18 20:55:20 receiver relevant log term: 4
+2024/09/18 20:55:20 leader is 2, its current commitIndex is : 13
+2024/09/18 20:55:20 we commit the value: 5262352656005745817
+2024/09/18 20:55:20 we send the value: 7930062043631190364
+2024/09/18 20:55:20 server[2] get a command, the log index is 14, the log term is 4
+2024/09/18 20:55:20 server[1] reveive a correct message from server[2]
+2024/09/18 20:55:20 args.PrevLogIndex : 13, args.PrevLogTerm: 4
+2024/09/18 20:55:20 receiver relevant log term: 4
+2024/09/18 20:55:20 server[0] reveive a correct message from server[2]
+2024/09/18 20:55:20 args.PrevLogIndex : 13, args.PrevLogTerm: 4
+2024/09/18 20:55:20 receiver relevant log term: 4
+2024/09/18 20:55:20 leader is 2, its current commitIndex is : 14
+2024/09/18 20:55:20 we commit the value: 7930062043631190364
+2024/09/18 20:55:20 we send the value: 359587535490591732
+2024/09/18 20:55:20 server[2] get a command, the log index is 15, the log term is 4
+2024/09/18 20:55:20 server[0] reveive a correct message from server[2]
+2024/09/18 20:55:20 args.PrevLogIndex : 14, args.PrevLogTerm: 4
+2024/09/18 20:55:20 receiver relevant log term: 4
+2024/09/18 20:55:20 server[1] reveive a correct message from server[2]
+2024/09/18 20:55:20 args.PrevLogIndex : 14, args.PrevLogTerm: 4
+2024/09/18 20:55:20 receiver relevant log term: 4
+2024/09/18 20:55:20 leader is 2, its current commitIndex is : 15
+2024/09/18 20:55:20 we commit the value: 359587535490591732
+2024/09/18 20:55:20 we send the value: 4656532747171459308
+2024/09/18 20:55:20 server[2] get a command, the log index is 16, the log term is 4
+2024/09/18 20:55:21 server[0] reveive a correct message from server[2]
+2024/09/18 20:55:21 args.PrevLogIndex : 15, args.PrevLogTerm: 4
+2024/09/18 20:55:21 receiver relevant log term: 4
+2024/09/18 20:55:21 server[1] reveive a correct message from server[2]
+2024/09/18 20:55:21 args.PrevLogIndex : 15, args.PrevLogTerm: 4
+2024/09/18 20:55:21 receiver relevant log term: 4
+2024/09/18 20:55:21 leader is 2, its current commitIndex is : 16
+2024/09/18 20:55:21 we commit the value: 4656532747171459308
+2024/09/18 20:55:21 we send the value: 1162947034399948067
+2024/09/18 20:55:21 server[2] get a command, the log index is 17, the log term is 4
+2024/09/18 20:55:21 server[1] reveive a correct message from server[2]
+2024/09/18 20:55:21 server[0] reveive a correct message from server[2]
+2024/09/18 20:55:21 args.PrevLogIndex : 16, args.PrevLogTerm: 4
+2024/09/18 20:55:21 receiver relevant log term: 4
+2024/09/18 20:55:21 args.PrevLogIndex : 16, args.PrevLogTerm: 4
+2024/09/18 20:55:21 receiver relevant log term: 4
+2024/09/18 20:55:21 leader is 2, its current commitIndex is : 17
+2024/09/18 20:55:21 we commit the value: 1162947034399948067
+2024/09/18 20:55:21 we send the value: 6761208825488749208
+2024/09/18 20:55:21 server[2] get a command, the log index is 18, the log term is 4
+2024/09/18 20:55:21 server[0] reveive a correct message from server[2]
+2024/09/18 20:55:21 args.PrevLogIndex : 17, args.PrevLogTerm: 4
+2024/09/18 20:55:21 receiver relevant log term: 4
+2024/09/18 20:55:21 server[1] reveive a correct message from server[2]
+2024/09/18 20:55:21 args.PrevLogIndex : 17, args.PrevLogTerm: 4
+2024/09/18 20:55:21 receiver relevant log term: 4
+2024/09/18 20:55:21 leader is 2, its current commitIndex is : 18
+2024/09/18 20:55:21 we commit the value: 6761208825488749208
+2024/09/18 20:55:21 we send the value: 864498525525519141
+2024/09/18 20:55:21 server[2] get a command, the log index is 19, the log term is 4
+2024/09/18 20:55:22 server[0] reveive a correct message from server[2]
+2024/09/18 20:55:22 args.PrevLogIndex : 18, args.PrevLogTerm: 4
+2024/09/18 20:55:22 receiver relevant log term: 4
+2024/09/18 20:55:22 server[1] reveive a correct message from server[2]
+2024/09/18 20:55:22 args.PrevLogIndex : 18, args.PrevLogTerm: 4
+2024/09/18 20:55:22 receiver relevant log term: 4
+2024/09/18 20:55:22 leader is 2, its current commitIndex is : 19
+2024/09/18 20:55:22 we commit the value: 864498525525519141
+2024/09/18 20:55:22 we send the value: 7528451519730956717
+2024/09/18 20:55:22 server[2] get a command, the log index is 20, the log term is 4
+2024/09/18 20:55:22 server[0] reveive a correct message from server[2]
+2024/09/18 20:55:22 args.PrevLogIndex : 19, args.PrevLogTerm: 4
+2024/09/18 20:55:22 receiver relevant log term: 4
+2024/09/18 20:55:22 server[1] reveive a correct message from server[2]
+2024/09/18 20:55:22 args.PrevLogIndex : 19, args.PrevLogTerm: 4
+2024/09/18 20:55:22 receiver relevant log term: 4
+2024/09/18 20:55:22 leader is 2, its current commitIndex is : 20
+2024/09/18 20:55:22 we commit the value: 7528451519730956717
+2024/09/18 20:55:22 we send the value: 7738651895442376326
+2024/09/18 20:55:22 server[2] get a command, the log index is 21, the log term is 4
+2024/09/18 20:55:22 server[0] reveive a correct message from server[2]
+2024/09/18 20:55:22 args.PrevLogIndex : 20, args.PrevLogTerm: 4
+2024/09/18 20:55:22 receiver relevant log term: 4
+2024/09/18 20:55:22 server[1] reveive a correct message from server[2]
+2024/09/18 20:55:22 args.PrevLogIndex : 20, args.PrevLogTerm: 4
+2024/09/18 20:55:22 receiver relevant log term: 4
+2024/09/18 20:55:22 leader is 2, its current commitIndex is : 21
+2024/09/18 20:55:22 we commit the value: 7738651895442376326
+2024/09/18 20:55:22 we send the value: 7204472166120325139
+2024/09/18 20:55:22 server[2] get a command, the log index is 22, the log term is 4
+2024/09/18 20:55:22 server[1] reveive a correct message from server[2]
+2024/09/18 20:55:22 args.PrevLogIndex : 21, args.PrevLogTerm: 4
+2024/09/18 20:55:22 receiver relevant log term: 4
+2024/09/18 20:55:22 server[0] reveive a correct message from server[2]
+2024/09/18 20:55:22 args.PrevLogIndex : 21, args.PrevLogTerm: 4
+2024/09/18 20:55:22 receiver relevant log term: 4
+2024/09/18 20:55:22 leader is 2, its current commitIndex is : 22
+2024/09/18 20:55:23 we commit the value: 7204472166120325139
+2024/09/18 20:55:23 we send the value: 6281708655735200135
+2024/09/18 20:55:23 server[2] get a command, the log index is 23, the log term is 4
+2024/09/18 20:55:23 server[0] reveive a correct message from server[2]
+2024/09/18 20:55:23 args.PrevLogIndex : 22, args.PrevLogTerm: 4
+2024/09/18 20:55:23 receiver relevant log term: 4
+2024/09/18 20:55:23 server[1] reveive a correct message from server[2]
+2024/09/18 20:55:23 args.PrevLogIndex : 22, args.PrevLogTerm: 4
+2024/09/18 20:55:23 receiver relevant log term: 4
+2024/09/18 20:55:23 leader is 2, its current commitIndex is : 23
+2024/09/18 20:55:23 we commit the value: 6281708655735200135
+2024/09/18 20:55:23 we send the value: 6416880292997795259
+2024/09/18 20:55:23 server[2] get a command, the log index is 24, the log term is 4
+2024/09/18 20:55:23 server[0] reveive a correct message from server[2]
+2024/09/18 20:55:23 args.PrevLogIndex : 23, args.PrevLogTerm: 4
+2024/09/18 20:55:23 receiver relevant log term: 4
+2024/09/18 20:55:23 server[1] reveive a correct message from server[2]
+2024/09/18 20:55:23 args.PrevLogIndex : 23, args.PrevLogTerm: 4
+2024/09/18 20:55:23 receiver relevant log term: 4
+2024/09/18 20:55:23 leader is 2, its current commitIndex is : 24
+2024/09/18 20:55:23 we commit the value: 6416880292997795259
+2024/09/18 20:55:23 we send the value: 1566872863576285224
+2024/09/18 20:55:23 server[2] get a command, the log index is 25, the log term is 4
+2024/09/18 20:55:23 server[0] reveive a correct message from server[2]
+2024/09/18 20:55:23 args.PrevLogIndex : 24, args.PrevLogTerm: 4
+2024/09/18 20:55:23 receiver relevant log term: 4
+2024/09/18 20:55:23 server[1] reveive a correct message from server[2]
+2024/09/18 20:55:23 args.PrevLogIndex : 24, args.PrevLogTerm: 4
+2024/09/18 20:55:23 receiver relevant log term: 4
+2024/09/18 20:55:23 leader is 2, its current commitIndex is : 25
+2024/09/18 20:55:23 we commit the value: 1566872863576285224
+2024/09/18 20:55:23 we send the value: 6173667819017029282
+2024/09/18 20:55:23 server[2] get a command, the log index is 26, the log term is 4
+2024/09/18 20:55:24 server[1] reveive a correct message from server[2]
+2024/09/18 20:55:24 server[0] reveive a correct message from server[2]
+2024/09/18 20:55:24 args.PrevLogIndex : 25, args.PrevLogTerm: 4
+2024/09/18 20:55:24 receiver relevant log term: 4
+2024/09/18 20:55:24 args.PrevLogIndex : 25, args.PrevLogTerm: 4
+2024/09/18 20:55:24 receiver relevant log term: 4
+2024/09/18 20:55:24 leader is 2, its current commitIndex is : 26
+2024/09/18 20:55:24 we commit the value: 6173667819017029282
+2024/09/18 20:55:24 we send the value: 647156179872084681
+2024/09/18 20:55:24 server[2] get a command, the log index is 27, the log term is 4
+2024/09/18 20:55:24 server[0] reveive a correct message from server[2]
+2024/09/18 20:55:24 args.PrevLogIndex : 26, args.PrevLogTerm: 4
+2024/09/18 20:55:24 receiver relevant log term: 4
+2024/09/18 20:55:24 server[1] reveive a correct message from server[2]
+2024/09/18 20:55:24 args.PrevLogIndex : 26, args.PrevLogTerm: 4
+2024/09/18 20:55:24 receiver relevant log term: 4
+2024/09/18 20:55:24 leader is 2, its current commitIndex is : 27
+2024/09/18 20:55:24 we commit the value: 647156179872084681
+2024/09/18 20:55:24 we send the value: 2820545161297003350
+2024/09/18 20:55:24 server[2] get a command, the log index is 28, the log term is 4
+2024/09/18 20:55:24 server[0] reveive a correct message from server[2]
+2024/09/18 20:55:24 args.PrevLogIndex : 27, args.PrevLogTerm: 4
+2024/09/18 20:55:24 receiver relevant log term: 4
+2024/09/18 20:55:24 server[1] reveive a correct message from server[2]
+2024/09/18 20:55:24 args.PrevLogIndex : 27, args.PrevLogTerm: 4
+2024/09/18 20:55:24 receiver relevant log term: 4
+2024/09/18 20:55:24 leader is 2, its current commitIndex is : 28
+2024/09/18 20:55:24 we commit the value: 2820545161297003350
+2024/09/18 20:55:24 we send the value: 993454651584405088
+2024/09/18 20:55:24 server[2] get a command, the log index is 29, the log term is 4
+2024/09/18 20:55:25 server[1] reveive a correct message from server[2]
+2024/09/18 20:55:25 args.PrevLogIndex : 28, args.PrevLogTerm: 4
+2024/09/18 20:55:25 receiver relevant log term: 4
+2024/09/18 20:55:25 server[0] reveive a correct message from server[2]
+2024/09/18 20:55:25 args.PrevLogIndex : 28, args.PrevLogTerm: 4
+2024/09/18 20:55:25 receiver relevant log term: 4
+2024/09/18 20:55:25 leader is 2, its current commitIndex is : 29
+2024/09/18 20:55:25 we commit the value: 993454651584405088
+2024/09/18 20:55:25 we send the value: 8257547146053700171
+2024/09/18 20:55:25 server[2] get a command, the log index is 30, the log term is 4
+2024/09/18 20:55:25 server[0] reveive a correct message from server[2]
+2024/09/18 20:55:25 args.PrevLogIndex : 29, args.PrevLogTerm: 4
+2024/09/18 20:55:25 receiver relevant log term: 4
+2024/09/18 20:55:25 server[1] reveive a correct message from server[2]
+2024/09/18 20:55:25 args.PrevLogIndex : 29, args.PrevLogTerm: 4
+2024/09/18 20:55:25 receiver relevant log term: 4
+2024/09/18 20:55:25 leader is 2, its current commitIndex is : 30
+2024/09/18 20:55:25 we commit the value: 8257547146053700171
+2024/09/18 20:55:25 we send the value: 2271985500944790772
+2024/09/18 20:55:25 server[2] get a command, the log index is 31, the log term is 4
+2024/09/18 20:55:25 server[0] reveive a correct message from server[2]
+2024/09/18 20:55:25 args.PrevLogIndex : 30, args.PrevLogTerm: 4
+2024/09/18 20:55:25 receiver relevant log term: 4
+2024/09/18 20:55:25 server[1] reveive a correct message from server[2]
+2024/09/18 20:55:25 args.PrevLogIndex : 30, args.PrevLogTerm: 4
+2024/09/18 20:55:25 receiver relevant log term: 4
+2024/09/18 20:55:25 leader is 2, its current commitIndex is : 31
+2024/09/18 20:55:25 we commit the value: 2271985500944790772
+2024/09/18 20:55:25 we send the value: 6298356471331409397
+2024/09/18 20:55:25 server[2] get a command, the log index is 32, the log term is 4
+2024/09/18 20:55:25 server[1] reveive a correct message from server[2]
+2024/09/18 20:55:25 args.PrevLogIndex : 31, args.PrevLogTerm: 4
+2024/09/18 20:55:25 receiver relevant log term: 4
+2024/09/18 20:55:25 server[0] reveive a correct message from server[2]
+2024/09/18 20:55:25 args.PrevLogIndex : 31, args.PrevLogTerm: 4
+2024/09/18 20:55:25 receiver relevant log term: 4
+2024/09/18 20:55:25 leader is 2, its current commitIndex is : 32
+2024/09/18 20:55:26 we commit the value: 6298356471331409397
+2024/09/18 20:55:26 we send the value: 5961712897987847683
+2024/09/18 20:55:26 server[2] get a command, the log index is 33, the log term is 4
+2024/09/18 20:55:26 server[1] reveive a correct message from server[2]
+2024/09/18 20:55:26 args.PrevLogIndex : 32, args.PrevLogTerm: 4
+2024/09/18 20:55:26 receiver relevant log term: 4
+2024/09/18 20:55:26 server[0] reveive a correct message from server[2]
+2024/09/18 20:55:26 args.PrevLogIndex : 32, args.PrevLogTerm: 4
+2024/09/18 20:55:26 receiver relevant log term: 4
+2024/09/18 20:55:26 leader is 2, its current commitIndex is : 33
+2024/09/18 20:55:26 we commit the value: 5961712897987847683
+2024/09/18 20:55:26 we send the value: 2607462249263736645
+2024/09/18 20:55:26 server[2] get a command, the log index is 34, the log term is 4
+2024/09/18 20:55:26 server[1] reveive a correct message from server[2]
+2024/09/18 20:55:26 args.PrevLogIndex : 33, args.PrevLogTerm: 4
+2024/09/18 20:55:26 receiver relevant log term: 4
+2024/09/18 20:55:26 server[0] reveive a correct message from server[2]
+2024/09/18 20:55:26 args.PrevLogIndex : 33, args.PrevLogTerm: 4
+2024/09/18 20:55:26 receiver relevant log term: 4
+2024/09/18 20:55:26 leader is 2, its current commitIndex is : 34
+2024/09/18 20:55:26 we commit the value: 2607462249263736645
+2024/09/18 20:55:26 we send the value: 1937582728451031963
+2024/09/18 20:55:26 server[2] get a command, the log index is 35, the log term is 4
+2024/09/18 20:55:26 server[0] reveive a correct message from server[2]
+2024/09/18 20:55:26 args.PrevLogIndex : 34, args.PrevLogTerm: 4
+2024/09/18 20:55:26 receiver relevant log term: 4
+2024/09/18 20:55:26 server[1] reveive a correct message from server[2]
+2024/09/18 20:55:26 args.PrevLogIndex : 34, args.PrevLogTerm: 4
+2024/09/18 20:55:26 receiver relevant log term: 4
+2024/09/18 20:55:26 leader is 2, its current commitIndex is : 35
+2024/09/18 20:55:26 we commit the value: 1937582728451031963
+2024/09/18 20:55:26 we send the value: 367661237861488779
+2024/09/18 20:55:26 server[2] get a command, the log index is 36, the log term is 4
+2024/09/18 20:55:27 server[0] reveive a correct message from server[2]
+2024/09/18 20:55:27 args.PrevLogIndex : 35, args.PrevLogTerm: 4
+2024/09/18 20:55:27 receiver relevant log term: 4
+2024/09/18 20:55:27 server[1] reveive a correct message from server[2]
+2024/09/18 20:55:27 args.PrevLogIndex : 35, args.PrevLogTerm: 4
+2024/09/18 20:55:27 receiver relevant log term: 4
+2024/09/18 20:55:27 leader is 2, its current commitIndex is : 36
+2024/09/18 20:55:27 we commit the value: 367661237861488779
+2024/09/18 20:55:27 we send the value: 8803344690357675077
+2024/09/18 20:55:27 server[2] get a command, the log index is 37, the log term is 4
+2024/09/18 20:55:27 server[0] reveive a correct message from server[2]
+2024/09/18 20:55:27 args.PrevLogIndex : 36, args.PrevLogTerm: 4
+2024/09/18 20:55:27 receiver relevant log term: 4
+2024/09/18 20:55:27 server[1] reveive a correct message from server[2]
+2024/09/18 20:55:27 args.PrevLogIndex : 36, args.PrevLogTerm: 4
+2024/09/18 20:55:27 receiver relevant log term: 4
+2024/09/18 20:55:27 leader is 2, its current commitIndex is : 37
+2024/09/18 20:55:27 we commit the value: 8803344690357675077
+2024/09/18 20:55:27 we send the value: 4686262708589653361
+2024/09/18 20:55:27 server[2] get a command, the log index is 38, the log term is 4
+2024/09/18 20:55:27 server[0] reveive a correct message from server[2]
+2024/09/18 20:55:27 args.PrevLogIndex : 37, args.PrevLogTerm: 4
+2024/09/18 20:55:27 receiver relevant log term: 4
+2024/09/18 20:55:27 server[1] reveive a correct message from server[2]
+2024/09/18 20:55:27 args.PrevLogIndex : 37, args.PrevLogTerm: 4
+2024/09/18 20:55:27 receiver relevant log term: 4
+2024/09/18 20:55:27 leader is 2, its current commitIndex is : 38
+2024/09/18 20:55:27 we commit the value: 4686262708589653361
+2024/09/18 20:55:27 we send the value: 4450829434473873458
+2024/09/18 20:55:27 server[2] get a command, the log index is 39, the log term is 4
+2024/09/18 20:55:28 server[0] reveive a correct message from server[2]
+2024/09/18 20:55:28 args.PrevLogIndex : 38, args.PrevLogTerm: 4
+2024/09/18 20:55:28 receiver relevant log term: 4
+2024/09/18 20:55:28 server[1] reveive a correct message from server[2]
+2024/09/18 20:55:28 args.PrevLogIndex : 38, args.PrevLogTerm: 4
+2024/09/18 20:55:28 receiver relevant log term: 4
+2024/09/18 20:55:28 leader is 2, its current commitIndex is : 39
+2024/09/18 20:55:28 we commit the value: 4450829434473873458
+2024/09/18 20:55:28 we send the value: 7650037694457115664
+2024/09/18 20:55:28 server[2] get a command, the log index is 40, the log term is 4
+2024/09/18 20:55:28 server[1] reveive a correct message from server[2]
+2024/09/18 20:55:28 args.PrevLogIndex : 39, args.PrevLogTerm: 4
+2024/09/18 20:55:28 receiver relevant log term: 4
+2024/09/18 20:55:28 server[0] reveive a correct message from server[2]
+2024/09/18 20:55:28 args.PrevLogIndex : 39, args.PrevLogTerm: 4
+2024/09/18 20:55:28 receiver relevant log term: 4
+2024/09/18 20:55:28 leader is 2, its current commitIndex is : 40
+2024/09/18 20:55:28 we commit the value: 7650037694457115664
+2024/09/18 20:55:28 we send the value: 2648297644177395331
+2024/09/18 20:55:28 server[2] get a command, the log index is 41, the log term is 4
+2024/09/18 20:55:28 server[1] reveive a correct message from server[2]
+2024/09/18 20:55:28 args.PrevLogIndex : 40, args.PrevLogTerm: 4
+2024/09/18 20:55:28 receiver relevant log term: 4
+2024/09/18 20:55:28 server[0] reveive a correct message from server[2]
+2024/09/18 20:55:28 args.PrevLogIndex : 40, args.PrevLogTerm: 4
+2024/09/18 20:55:28 receiver relevant log term: 4
+2024/09/18 20:55:28 leader is 2, its current commitIndex is : 41
+2024/09/18 20:55:28 we commit the value: 2648297644177395331
+2024/09/18 20:55:28 we send the value: 6658790599181488485
+2024/09/18 20:55:28 server[2] get a command, the log index is 42, the log term is 4
+2024/09/18 20:55:28 server[0] reveive a correct message from server[2]
+2024/09/18 20:55:28 args.PrevLogIndex : 41, args.PrevLogTerm: 4
+2024/09/18 20:55:28 receiver relevant log term: 4
+2024/09/18 20:55:28 server[1] reveive a correct message from server[2]
+2024/09/18 20:55:28 args.PrevLogIndex : 41, args.PrevLogTerm: 4
+2024/09/18 20:55:28 receiver relevant log term: 4
+2024/09/18 20:55:28 leader is 2, its current commitIndex is : 42
+2024/09/18 20:55:29 we commit the value: 6658790599181488485
+2024/09/18 20:55:29 we send the value: 462759059298059878
+2024/09/18 20:55:29 server[2] get a command, the log index is 43, the log term is 4
+2024/09/18 20:55:29 server[1] reveive a correct message from server[2]
+2024/09/18 20:55:29 args.PrevLogIndex : 42, args.PrevLogTerm: 4
+2024/09/18 20:55:29 receiver relevant log term: 4
+2024/09/18 20:55:29 server[0] reveive a correct message from server[2]
+2024/09/18 20:55:29 args.PrevLogIndex : 42, args.PrevLogTerm: 4
+2024/09/18 20:55:29 receiver relevant log term: 4
+2024/09/18 20:55:29 leader is 2, its current commitIndex is : 43
+2024/09/18 20:55:29 we commit the value: 462759059298059878
+2024/09/18 20:55:29 we send the value: 5897069640600876143
+2024/09/18 20:55:29 server[2] get a command, the log index is 44, the log term is 4
+2024/09/18 20:55:29 server[0] reveive a correct message from server[2]
+2024/09/18 20:55:29 args.PrevLogIndex : 43, args.PrevLogTerm: 4
+2024/09/18 20:55:29 receiver relevant log term: 4
+2024/09/18 20:55:29 server[1] reveive a correct message from server[2]
+2024/09/18 20:55:29 args.PrevLogIndex : 43, args.PrevLogTerm: 4
+2024/09/18 20:55:29 receiver relevant log term: 4
+2024/09/18 20:55:29 leader is 2, its current commitIndex is : 44
+2024/09/18 20:55:29 we commit the value: 5897069640600876143
+2024/09/18 20:55:29 we send the value: 175977769272258977
+2024/09/18 20:55:29 server[2] get a command, the log index is 45, the log term is 4
+2024/09/18 20:55:29 server[0] reveive a correct message from server[2]
+2024/09/18 20:55:29 args.PrevLogIndex : 44, args.PrevLogTerm: 4
+2024/09/18 20:55:29 receiver relevant log term: 4
+2024/09/18 20:55:29 server[1] reveive a correct message from server[2]
+2024/09/18 20:55:29 args.PrevLogIndex : 44, args.PrevLogTerm: 4
+2024/09/18 20:55:29 receiver relevant log term: 4
+2024/09/18 20:55:29 leader is 2, its current commitIndex is : 45
+2024/09/18 20:55:30 we commit the value: 175977769272258977
+2024/09/18 20:55:30 we send the value: 150705586702098917
+2024/09/18 20:55:30 server[2] get a command, the log index is 46, the log term is 4
+2024/09/18 20:55:30 server[1] reveive a correct message from server[2]
+2024/09/18 20:55:30 args.PrevLogIndex : 45, args.PrevLogTerm: 4
+2024/09/18 20:55:30 receiver relevant log term: 4
+2024/09/18 20:55:30 server[0] reveive a correct message from server[2]
+2024/09/18 20:55:30 args.PrevLogIndex : 45, args.PrevLogTerm: 4
+2024/09/18 20:55:30 receiver relevant log term: 4
+2024/09/18 20:55:30 leader is 2, its current commitIndex is : 46
+2024/09/18 20:55:30 we commit the value: 150705586702098917
+2024/09/18 20:55:30 we send the value: 3026474422182876267
+2024/09/18 20:55:30 server[2] get a command, the log index is 47, the log term is 4
+2024/09/18 20:55:30 server[1] reveive a correct message from server[2]
+2024/09/18 20:55:30 args.PrevLogIndex : 46, args.PrevLogTerm: 4
+2024/09/18 20:55:30 receiver relevant log term: 4
+2024/09/18 20:55:30 server[0] reveive a correct message from server[2]
+2024/09/18 20:55:30 args.PrevLogIndex : 46, args.PrevLogTerm: 4
+2024/09/18 20:55:30 receiver relevant log term: 4
+2024/09/18 20:55:30 leader is 2, its current commitIndex is : 47
+2024/09/18 20:55:30 we commit the value: 3026474422182876267
+2024/09/18 20:55:30 we send the value: 688555047629501550
+2024/09/18 20:55:30 server[2] get a command, the log index is 48, the log term is 4
+2024/09/18 20:55:30 server[1] reveive a correct message from server[2]
+2024/09/18 20:55:30 args.PrevLogIndex : 47, args.PrevLogTerm: 4
+2024/09/18 20:55:30 receiver relevant log term: 4
+2024/09/18 20:55:30 server[0] reveive a correct message from server[2]
+2024/09/18 20:55:30 args.PrevLogIndex : 47, args.PrevLogTerm: 4
+2024/09/18 20:55:30 receiver relevant log term: 4
+2024/09/18 20:55:30 leader is 2, its current commitIndex is : 48
+2024/09/18 20:55:30 we commit the value: 688555047629501550
+2024/09/18 20:55:30 we send the value: 4743529418881203952
+2024/09/18 20:55:30 server[2] get a command, the log index is 49, the log term is 4
+2024/09/18 20:55:31 server[0] reveive a correct message from server[2]
+2024/09/18 20:55:31 args.PrevLogIndex : 48, args.PrevLogTerm: 4
+2024/09/18 20:55:31 receiver relevant log term: 4
+2024/09/18 20:55:31 server[1] reveive a correct message from server[2]
+2024/09/18 20:55:31 args.PrevLogIndex : 48, args.PrevLogTerm: 4
+2024/09/18 20:55:31 receiver relevant log term: 4
+2024/09/18 20:55:31 leader is 2, its current commitIndex is : 49
+2024/09/18 20:55:31 we commit the value: 4743529418881203952
+2024/09/18 20:55:31 we send the value: 1053797846101209622
+2024/09/18 20:55:31 server[2] get a command, the log index is 50, the log term is 4
+2024/09/18 20:55:31 server[1] reveive a correct message from server[2]
+2024/09/18 20:55:31 args.PrevLogIndex : 49, args.PrevLogTerm: 4
+2024/09/18 20:55:31 receiver relevant log term: 4
+2024/09/18 20:55:31 server[0] reveive a correct message from server[2]
+2024/09/18 20:55:31 args.PrevLogIndex : 49, args.PrevLogTerm: 4
+2024/09/18 20:55:31 receiver relevant log term: 4
+2024/09/18 20:55:31 leader is 2, its current commitIndex is : 50
+2024/09/18 20:55:31 we commit the value: 1053797846101209622
+2024/09/18 20:55:31 we send the value: 3711399767528378460
+2024/09/18 20:55:31 server[2] get a command, the log index is 51, the log term is 4
+2024/09/18 20:55:31 server[1] reveive a correct message from server[2]
+2024/09/18 20:55:31 args.PrevLogIndex : 50, args.PrevLogTerm: 4
+2024/09/18 20:55:31 receiver relevant log term: 4
+2024/09/18 20:55:31 server[0] reveive a correct message from server[2]
+2024/09/18 20:55:31 args.PrevLogIndex : 50, args.PrevLogTerm: 4
+2024/09/18 20:55:31 receiver relevant log term: 4
+2024/09/18 20:55:31 leader is 2, its current commitIndex is : 51
+2024/09/18 20:55:31 we commit the value: 3711399767528378460
+2024/09/18 20:55:32 server[2] get a command, the log index is 52, the log term is 4
+2024/09/18 20:55:32 server[2] get a command, the log index is 53, the log term is 4
+2024/09/18 20:55:32 server[2] get a command, the log index is 54, the log term is 4
+2024/09/18 20:55:32 server[2] get a command, the log index is 55, the log term is 4
+2024/09/18 20:55:32 server[2] get a command, the log index is 56, the log term is 4
+2024/09/18 20:55:32 server[2] get a command, the log index is 57, the log term is 4
+2024/09/18 20:55:32 server[2] get a command, the log index is 58, the log term is 4
+2024/09/18 20:55:32 server[2] get a command, the log index is 59, the log term is 4
+2024/09/18 20:55:32 server[2] get a command, the log index is 60, the log term is 4
+2024/09/18 20:55:32 server[2] get a command, the log index is 61, the log term is 4
+2024/09/18 20:55:32 server[2] get a command, the log index is 62, the log term is 4
+2024/09/18 20:55:32 server[2] get a command, the log index is 63, the log term is 4
+2024/09/18 20:55:32 server[2] get a command, the log index is 64, the log term is 4
+2024/09/18 20:55:32 server[2] get a command, the log index is 65, the log term is 4
+2024/09/18 20:55:32 server[2] get a command, the log index is 66, the log term is 4
+2024/09/18 20:55:32 server[2] get a command, the log index is 67, the log term is 4
+2024/09/18 20:55:32 server[2] get a command, the log index is 68, the log term is 4
+2024/09/18 20:55:32 server[2] get a command, the log index is 69, the log term is 4
+2024/09/18 20:55:32 server[2] get a command, the log index is 70, the log term is 4
+2024/09/18 20:55:32 server[2] get a command, the log index is 71, the log term is 4
+2024/09/18 20:55:32 server[2] get a command, the log index is 72, the log term is 4
+2024/09/18 20:55:32 server[2] get a command, the log index is 73, the log term is 4
+2024/09/18 20:55:32 server[2] get a command, the log index is 74, the log term is 4
+2024/09/18 20:55:32 server[2] get a command, the log index is 75, the log term is 4
+2024/09/18 20:55:32 server[2] get a command, the log index is 76, the log term is 4
+2024/09/18 20:55:32 server[2] get a command, the log index is 77, the log term is 4
+2024/09/18 20:55:32 server[2] get a command, the log index is 78, the log term is 4
+2024/09/18 20:55:32 server[2] get a command, the log index is 79, the log term is 4
+2024/09/18 20:55:32 server[2] get a command, the log index is 80, the log term is 4
+2024/09/18 20:55:32 server[2] get a command, the log index is 81, the log term is 4
+2024/09/18 20:55:32 server[2] get a command, the log index is 82, the log term is 4
+2024/09/18 20:55:32 server[2] get a command, the log index is 83, the log term is 4
+2024/09/18 20:55:32 server[2] get a command, the log index is 84, the log term is 4
+2024/09/18 20:55:32 server[2] get a command, the log index is 85, the log term is 4
+2024/09/18 20:55:32 server[2] get a command, the log index is 86, the log term is 4
+2024/09/18 20:55:32 server[2] get a command, the log index is 87, the log term is 4
+2024/09/18 20:55:32 server[2] get a command, the log index is 88, the log term is 4
+2024/09/18 20:55:32 server[2] get a command, the log index is 89, the log term is 4
+2024/09/18 20:55:32 server[2] get a command, the log index is 90, the log term is 4
+2024/09/18 20:55:32 server[2] get a command, the log index is 91, the log term is 4
+2024/09/18 20:55:32 server[2] get a command, the log index is 92, the log term is 4
+2024/09/18 20:55:32 server[2] get a command, the log index is 93, the log term is 4
+2024/09/18 20:55:32 server[2] get a command, the log index is 94, the log term is 4
+2024/09/18 20:55:32 server[2] get a command, the log index is 95, the log term is 4
+2024/09/18 20:55:32 server[2] get a command, the log index is 96, the log term is 4
+2024/09/18 20:55:32 server[2] get a command, the log index is 97, the log term is 4
+2024/09/18 20:55:32 server[2] get a command, the log index is 98, the log term is 4
+2024/09/18 20:55:32 server[2] get a command, the log index is 99, the log term is 4
+2024/09/18 20:55:32 server[2] get a command, the log index is 100, the log term is 4
+2024/09/18 20:55:32 server[2] get a command, the log index is 101, the log term is 4
+2024/09/18 20:55:32 server[1] reveive a correct message from server[2]
+2024/09/18 20:55:32 args.PrevLogIndex : 51, args.PrevLogTerm: 4
+2024/09/18 20:55:32 receiver relevant log term: 4
+2024/09/18 20:55:32 we send the value: 3426304437891297351
+2024/09/18 20:55:32 server[3] get a command, the log index is 52, the log term is 1
+2024/09/18 20:55:34 server[0] get a command, the log index is 52, the log term is 63
+2024/09/18 20:55:34 server[4] reveive a correct message from server[0]
+2024/09/18 20:55:34 args.PrevLogIndex : 51, args.PrevLogTerm: 4
+2024/09/18 20:55:34 receiver relevant log term: 1
+2024/09/18 20:55:34 server[3] reveive a correct message from server[0]
+2024/09/18 20:55:34 args.PrevLogIndex : 51, args.PrevLogTerm: 4
+2024/09/18 20:55:34 receiver relevant log term: 1
+2024/09/18 20:55:35 server[4] reveive a correct message from server[0]
+2024/09/18 20:55:35 args.PrevLogIndex : 1, args.PrevLogTerm: 1
+2024/09/18 20:55:35 receiver relevant log term: 1
+2024/09/18 20:55:35 server[3] reveive a correct message from server[0]
+2024/09/18 20:55:35 args.PrevLogIndex : 1, args.PrevLogTerm: 1
+2024/09/18 20:55:35 receiver relevant log term: 1
+2024/09/18 20:55:35 leader is 0, its current commitIndex is : 52
+2024/09/18 20:55:35 we commit the value: 3426304437891297351
+2024/09/18 20:55:35 we send the value: 8334713239173134036
+2024/09/18 20:55:35 server[0] get a command, the log index is 53, the log term is 63
+2024/09/18 20:55:35 server[4] reveive a correct message from server[0]
+2024/09/18 20:55:35 args.PrevLogIndex : 52, args.PrevLogTerm: 63
+2024/09/18 20:55:35 receiver relevant log term: 63
+2024/09/18 20:55:35 server[3] reveive a correct message from server[0]
+2024/09/18 20:55:35 args.PrevLogIndex : 52, args.PrevLogTerm: 63
+2024/09/18 20:55:35 receiver relevant log term: 63
+2024/09/18 20:55:35 leader is 0, its current commitIndex is : 53
+2024/09/18 20:55:35 we commit the value: 8334713239173134036
+2024/09/18 20:55:35 we send the value: 203182686719526725
+2024/09/18 20:55:35 server[0] get a command, the log index is 54, the log term is 63
+2024/09/18 20:55:35 server[4] reveive a correct message from server[0]
+2024/09/18 20:55:35 args.PrevLogIndex : 53, args.PrevLogTerm: 63
+2024/09/18 20:55:35 receiver relevant log term: 63
+2024/09/18 20:55:35 server[3] reveive a correct message from server[0]
+2024/09/18 20:55:35 args.PrevLogIndex : 53, args.PrevLogTerm: 63
+2024/09/18 20:55:35 receiver relevant log term: 63
+2024/09/18 20:55:35 leader is 0, its current commitIndex is : 54
+2024/09/18 20:55:35 we commit the value: 203182686719526725
+2024/09/18 20:55:35 we send the value: 5782063951087225838
+2024/09/18 20:55:35 server[0] get a command, the log index is 55, the log term is 63
+2024/09/18 20:55:35 server[4] reveive a correct message from server[0]
+2024/09/18 20:55:35 args.PrevLogIndex : 54, args.PrevLogTerm: 63
+2024/09/18 20:55:35 receiver relevant log term: 63
+2024/09/18 20:55:35 server[3] reveive a correct message from server[0]
+2024/09/18 20:55:35 args.PrevLogIndex : 54, args.PrevLogTerm: 63
+2024/09/18 20:55:35 receiver relevant log term: 63
+2024/09/18 20:55:35 leader is 0, its current commitIndex is : 55
+2024/09/18 20:55:36 we commit the value: 5782063951087225838
+2024/09/18 20:55:36 we send the value: 8097388785654681273
+2024/09/18 20:55:36 server[0] get a command, the log index is 56, the log term is 63
+2024/09/18 20:55:36 server[4] reveive a correct message from server[0]
+2024/09/18 20:55:36 args.PrevLogIndex : 55, args.PrevLogTerm: 63
+2024/09/18 20:55:36 receiver relevant log term: 63
+2024/09/18 20:55:36 server[3] reveive a correct message from server[0]
+2024/09/18 20:55:36 args.PrevLogIndex : 55, args.PrevLogTerm: 63
+2024/09/18 20:55:36 receiver relevant log term: 63
+2024/09/18 20:55:36 leader is 0, its current commitIndex is : 56
+2024/09/18 20:55:36 we commit the value: 8097388785654681273
+2024/09/18 20:55:36 we send the value: 3171079199160624596
+2024/09/18 20:55:36 server[0] get a command, the log index is 57, the log term is 63
+2024/09/18 20:55:36 server[4] reveive a correct message from server[0]
+2024/09/18 20:55:36 args.PrevLogIndex : 56, args.PrevLogTerm: 63
+2024/09/18 20:55:36 server[3] reveive a correct message from server[0]
+2024/09/18 20:55:36 args.PrevLogIndex : 56, args.PrevLogTerm: 63
+2024/09/18 20:55:36 receiver relevant log term: 63
+2024/09/18 20:55:36 receiver relevant log term: 63
+2024/09/18 20:55:36 leader is 0, its current commitIndex is : 57
+2024/09/18 20:55:36 we commit the value: 3171079199160624596
+2024/09/18 20:55:36 we send the value: 7584227954565957891
+2024/09/18 20:55:36 server[0] get a command, the log index is 58, the log term is 63
+2024/09/18 20:55:36 server[4] reveive a correct message from server[0]
+2024/09/18 20:55:36 server[3] reveive a correct message from server[0]
+2024/09/18 20:55:36 args.PrevLogIndex : 57, args.PrevLogTerm: 63
+2024/09/18 20:55:36 receiver relevant log term: 63
+2024/09/18 20:55:36 args.PrevLogIndex : 57, args.PrevLogTerm: 63
+2024/09/18 20:55:36 receiver relevant log term: 63
+2024/09/18 20:55:36 leader is 0, its current commitIndex is : 58
+2024/09/18 20:55:36 we commit the value: 7584227954565957891
+2024/09/18 20:55:36 we send the value: 21706397655072096
+2024/09/18 20:55:36 server[0] get a command, the log index is 59, the log term is 63
+2024/09/18 20:55:37 server[4] reveive a correct message from server[0]
+2024/09/18 20:55:37 args.PrevLogIndex : 58, args.PrevLogTerm: 63
+2024/09/18 20:55:37 receiver relevant log term: 63
+2024/09/18 20:55:37 server[3] reveive a correct message from server[0]
+2024/09/18 20:55:37 args.PrevLogIndex : 58, args.PrevLogTerm: 63
+2024/09/18 20:55:37 receiver relevant log term: 63
+2024/09/18 20:55:37 leader is 0, its current commitIndex is : 59
+2024/09/18 20:55:37 we commit the value: 21706397655072096
+2024/09/18 20:55:37 we send the value: 3283713267504173999
+2024/09/18 20:55:37 server[0] get a command, the log index is 60, the log term is 63
+2024/09/18 20:55:37 server[4] reveive a correct message from server[0]
+2024/09/18 20:55:37 args.PrevLogIndex : 59, args.PrevLogTerm: 63
+2024/09/18 20:55:37 receiver relevant log term: 63
+2024/09/18 20:55:37 server[3] reveive a correct message from server[0]
+2024/09/18 20:55:37 args.PrevLogIndex : 59, args.PrevLogTerm: 63
+2024/09/18 20:55:37 receiver relevant log term: 63
+2024/09/18 20:55:37 leader is 0, its current commitIndex is : 60
+2024/09/18 20:55:37 we commit the value: 3283713267504173999
+2024/09/18 20:55:37 we send the value: 5344189525310079263
+2024/09/18 20:55:37 server[0] get a command, the log index is 61, the log term is 63
+2024/09/18 20:55:37 server[4] reveive a correct message from server[0]
+2024/09/18 20:55:37 args.PrevLogIndex : 60, args.PrevLogTerm: 63
+2024/09/18 20:55:37 receiver relevant log term: 63
+2024/09/18 20:55:37 server[3] reveive a correct message from server[0]
+2024/09/18 20:55:37 args.PrevLogIndex : 60, args.PrevLogTerm: 63
+2024/09/18 20:55:37 receiver relevant log term: 63
+2024/09/18 20:55:37 leader is 0, its current commitIndex is : 61
+2024/09/18 20:55:37 we commit the value: 5344189525310079263
+2024/09/18 20:55:37 we send the value: 3332477932161945777
+2024/09/18 20:55:37 server[0] get a command, the log index is 62, the log term is 63
+2024/09/18 20:55:38 server[4] reveive a correct message from server[0]
+2024/09/18 20:55:38 args.PrevLogIndex : 61, args.PrevLogTerm: 63
+2024/09/18 20:55:38 receiver relevant log term: 63
+2024/09/18 20:55:38 server[3] reveive a correct message from server[0]
+2024/09/18 20:55:38 args.PrevLogIndex : 61, args.PrevLogTerm: 63
+2024/09/18 20:55:38 receiver relevant log term: 63
+2024/09/18 20:55:38 leader is 0, its current commitIndex is : 62
+2024/09/18 20:55:38 we commit the value: 3332477932161945777
+2024/09/18 20:55:38 we send the value: 4419181540759425959
+2024/09/18 20:55:38 server[0] get a command, the log index is 63, the log term is 63
+2024/09/18 20:55:38 server[4] reveive a correct message from server[0]
+2024/09/18 20:55:38 args.PrevLogIndex : 62, args.PrevLogTerm: 63
+2024/09/18 20:55:38 receiver relevant log term: 63
+2024/09/18 20:55:38 server[3] reveive a correct message from server[0]
+2024/09/18 20:55:38 args.PrevLogIndex : 62, args.PrevLogTerm: 63
+2024/09/18 20:55:38 receiver relevant log term: 63
+2024/09/18 20:55:38 leader is 0, its current commitIndex is : 63
+2024/09/18 20:55:38 we commit the value: 4419181540759425959
+2024/09/18 20:55:38 we send the value: 4762746207045521464
+2024/09/18 20:55:38 server[0] get a command, the log index is 64, the log term is 63
+2024/09/18 20:55:38 server[4] reveive a correct message from server[0]
+2024/09/18 20:55:38 args.PrevLogIndex : 63, args.PrevLogTerm: 63
+2024/09/18 20:55:38 receiver relevant log term: 63
+2024/09/18 20:55:38 server[3] reveive a correct message from server[0]
+2024/09/18 20:55:38 args.PrevLogIndex : 63, args.PrevLogTerm: 63
+2024/09/18 20:55:38 receiver relevant log term: 63
+2024/09/18 20:55:38 leader is 0, its current commitIndex is : 64
+2024/09/18 20:55:38 we commit the value: 4762746207045521464
+2024/09/18 20:55:38 we send the value: 7269044957353177657
+2024/09/18 20:55:38 server[0] get a command, the log index is 65, the log term is 63
+2024/09/18 20:55:38 server[4] reveive a correct message from server[0]
+2024/09/18 20:55:38 args.PrevLogIndex : 64, args.PrevLogTerm: 63
+2024/09/18 20:55:38 receiver relevant log term: 63
+2024/09/18 20:55:38 server[3] reveive a correct message from server[0]
+2024/09/18 20:55:38 args.PrevLogIndex : 64, args.PrevLogTerm: 63
+2024/09/18 20:55:38 receiver relevant log term: 63
+2024/09/18 20:55:38 leader is 0, its current commitIndex is : 65
+2024/09/18 20:55:39 we commit the value: 7269044957353177657
+2024/09/18 20:55:39 we send the value: 2459966771943179854
+2024/09/18 20:55:39 server[0] get a command, the log index is 66, the log term is 63
+2024/09/18 20:55:39 server[4] reveive a correct message from server[0]
+2024/09/18 20:55:39 args.PrevLogIndex : 65, args.PrevLogTerm: 63
+2024/09/18 20:55:39 receiver relevant log term: 63
+2024/09/18 20:55:39 server[3] reveive a correct message from server[0]
+2024/09/18 20:55:39 args.PrevLogIndex : 65, args.PrevLogTerm: 63
+2024/09/18 20:55:39 receiver relevant log term: 63
+2024/09/18 20:55:39 leader is 0, its current commitIndex is : 66
+2024/09/18 20:55:39 we commit the value: 2459966771943179854
+2024/09/18 20:55:39 we send the value: 4058734116716578315
+2024/09/18 20:55:39 server[0] get a command, the log index is 67, the log term is 63
+2024/09/18 20:55:39 server[4] reveive a correct message from server[0]
+2024/09/18 20:55:39 args.PrevLogIndex : 66, args.PrevLogTerm: 63
+2024/09/18 20:55:39 receiver relevant log term: 63
+2024/09/18 20:55:39 server[3] reveive a correct message from server[0]
+2024/09/18 20:55:39 args.PrevLogIndex : 66, args.PrevLogTerm: 63
+2024/09/18 20:55:39 receiver relevant log term: 63
+2024/09/18 20:55:39 leader is 0, its current commitIndex is : 67
+2024/09/18 20:55:39 we commit the value: 4058734116716578315
+2024/09/18 20:55:39 we send the value: 3396045509058695205
+2024/09/18 20:55:39 server[0] get a command, the log index is 68, the log term is 63
+2024/09/18 20:55:39 server[4] reveive a correct message from server[0]
+2024/09/18 20:55:39 args.PrevLogIndex : 67, args.PrevLogTerm: 63
+2024/09/18 20:55:39 receiver relevant log term: 63
+2024/09/18 20:55:39 server[3] reveive a correct message from server[0]
+2024/09/18 20:55:39 args.PrevLogIndex : 67, args.PrevLogTerm: 63
+2024/09/18 20:55:39 receiver relevant log term: 63
+2024/09/18 20:55:39 leader is 0, its current commitIndex is : 68
+2024/09/18 20:55:40 we commit the value: 3396045509058695205
+2024/09/18 20:55:40 we send the value: 7651322382760960575
+2024/09/18 20:55:40 server[0] get a command, the log index is 69, the log term is 63
+2024/09/18 20:55:40 server[4] reveive a correct message from server[0]
+2024/09/18 20:55:40 args.PrevLogIndex : 68, args.PrevLogTerm: 63
+2024/09/18 20:55:40 receiver relevant log term: 63
+2024/09/18 20:55:40 server[3] reveive a correct message from server[0]
+2024/09/18 20:55:40 args.PrevLogIndex : 68, args.PrevLogTerm: 63
+2024/09/18 20:55:40 receiver relevant log term: 63
+2024/09/18 20:55:40 leader is 0, its current commitIndex is : 69
+2024/09/18 20:55:40 we commit the value: 7651322382760960575
+2024/09/18 20:55:40 we send the value: 5059361094485232356
+2024/09/18 20:55:40 server[0] get a command, the log index is 70, the log term is 63
+2024/09/18 20:55:40 server[4] reveive a correct message from server[0]
+2024/09/18 20:55:40 args.PrevLogIndex : 69, args.PrevLogTerm: 63
+2024/09/18 20:55:40 receiver relevant log term: 63
+2024/09/18 20:55:40 server[3] reveive a correct message from server[0]
+2024/09/18 20:55:40 args.PrevLogIndex : 69, args.PrevLogTerm: 63
+2024/09/18 20:55:40 receiver relevant log term: 63
+2024/09/18 20:55:40 leader is 0, its current commitIndex is : 70
+2024/09/18 20:55:40 we commit the value: 5059361094485232356
+2024/09/18 20:55:40 we send the value: 6218876570937401910
+2024/09/18 20:55:40 server[0] get a command, the log index is 71, the log term is 63
+2024/09/18 20:55:40 server[4] reveive a correct message from server[0]
+2024/09/18 20:55:40 args.PrevLogIndex : 70, args.PrevLogTerm: 63
+2024/09/18 20:55:40 receiver relevant log term: 63
+2024/09/18 20:55:40 server[3] reveive a correct message from server[0]
+2024/09/18 20:55:40 args.PrevLogIndex : 70, args.PrevLogTerm: 63
+2024/09/18 20:55:40 receiver relevant log term: 63
+2024/09/18 20:55:40 leader is 0, its current commitIndex is : 71
+2024/09/18 20:55:40 we commit the value: 6218876570937401910
+2024/09/18 20:55:40 we send the value: 3071327091682914525
+2024/09/18 20:55:40 server[0] get a command, the log index is 72, the log term is 63
+2024/09/18 20:55:41 server[4] reveive a correct message from server[0]
+2024/09/18 20:55:41 args.PrevLogIndex : 71, args.PrevLogTerm: 63
+2024/09/18 20:55:41 receiver relevant log term: 63
+2024/09/18 20:55:41 server[3] reveive a correct message from server[0]
+2024/09/18 20:55:41 args.PrevLogIndex : 71, args.PrevLogTerm: 63
+2024/09/18 20:55:41 receiver relevant log term: 63
+2024/09/18 20:55:41 leader is 0, its current commitIndex is : 72
+2024/09/18 20:55:41 we commit the value: 3071327091682914525
+2024/09/18 20:55:41 we send the value: 6586088057929646457
+2024/09/18 20:55:41 server[0] get a command, the log index is 73, the log term is 63
+2024/09/18 20:55:41 server[4] reveive a correct message from server[0]
+2024/09/18 20:55:41 args.PrevLogIndex : 72, args.PrevLogTerm: 63
+2024/09/18 20:55:41 receiver relevant log term: 63
+2024/09/18 20:55:41 server[3] reveive a correct message from server[0]
+2024/09/18 20:55:41 args.PrevLogIndex : 72, args.PrevLogTerm: 63
+2024/09/18 20:55:41 receiver relevant log term: 63
+2024/09/18 20:55:41 leader is 0, its current commitIndex is : 73
+2024/09/18 20:55:41 we commit the value: 6586088057929646457
+2024/09/18 20:55:41 we send the value: 2350663180931887915
+2024/09/18 20:55:41 server[0] get a command, the log index is 74, the log term is 63
+2024/09/18 20:55:41 server[4] reveive a correct message from server[0]
+2024/09/18 20:55:41 args.PrevLogIndex : 73, args.PrevLogTerm: 63
+2024/09/18 20:55:41 receiver relevant log term: 63
+2024/09/18 20:55:41 server[3] reveive a correct message from server[0]
+2024/09/18 20:55:41 args.PrevLogIndex : 73, args.PrevLogTerm: 63
+2024/09/18 20:55:41 receiver relevant log term: 63
+2024/09/18 20:55:41 leader is 0, its current commitIndex is : 74
+2024/09/18 20:55:41 we commit the value: 2350663180931887915
+2024/09/18 20:55:41 we send the value: 1073195810716160643
+2024/09/18 20:55:41 server[0] get a command, the log index is 75, the log term is 63
+2024/09/18 20:55:41 server[4] reveive a correct message from server[0]
+2024/09/18 20:55:41 args.PrevLogIndex : 74, args.PrevLogTerm: 63
+2024/09/18 20:55:41 receiver relevant log term: 63
+2024/09/18 20:55:41 server[3] reveive a correct message from server[0]
+2024/09/18 20:55:41 args.PrevLogIndex : 74, args.PrevLogTerm: 63
+2024/09/18 20:55:41 receiver relevant log term: 63
+2024/09/18 20:55:41 leader is 0, its current commitIndex is : 75
+2024/09/18 20:55:42 we commit the value: 1073195810716160643
+2024/09/18 20:55:42 we send the value: 3376524641478684765
+2024/09/18 20:55:42 server[0] get a command, the log index is 76, the log term is 63
+2024/09/18 20:55:42 server[4] reveive a correct message from server[0]
+2024/09/18 20:55:42 args.PrevLogIndex : 75, args.PrevLogTerm: 63
+2024/09/18 20:55:42 receiver relevant log term: 63
+2024/09/18 20:55:42 server[3] reveive a correct message from server[0]
+2024/09/18 20:55:42 args.PrevLogIndex : 75, args.PrevLogTerm: 63
+2024/09/18 20:55:42 receiver relevant log term: 63
+2024/09/18 20:55:42 leader is 0, its current commitIndex is : 76
+2024/09/18 20:55:42 we commit the value: 3376524641478684765
+2024/09/18 20:55:42 we send the value: 5283288438503435433
+2024/09/18 20:55:42 server[0] get a command, the log index is 77, the log term is 63
+2024/09/18 20:55:42 server[4] reveive a correct message from server[0]
+2024/09/18 20:55:42 args.PrevLogIndex : 76, args.PrevLogTerm: 63
+2024/09/18 20:55:42 receiver relevant log term: 63
+2024/09/18 20:55:42 server[3] reveive a correct message from server[0]
+2024/09/18 20:55:42 args.PrevLogIndex : 76, args.PrevLogTerm: 63
+2024/09/18 20:55:42 receiver relevant log term: 63
+2024/09/18 20:55:42 leader is 0, its current commitIndex is : 77
+2024/09/18 20:55:42 we commit the value: 5283288438503435433
+2024/09/18 20:55:42 we send the value: 7670285295412316787
+2024/09/18 20:55:42 server[0] get a command, the log index is 78, the log term is 63
+2024/09/18 20:55:42 server[4] reveive a correct message from server[0]
+2024/09/18 20:55:42 args.PrevLogIndex : 77, args.PrevLogTerm: 63
+2024/09/18 20:55:42 receiver relevant log term: 63
+2024/09/18 20:55:42 server[3] reveive a correct message from server[0]
+2024/09/18 20:55:42 args.PrevLogIndex : 77, args.PrevLogTerm: 63
+2024/09/18 20:55:42 receiver relevant log term: 63
+2024/09/18 20:55:42 leader is 0, its current commitIndex is : 78
+2024/09/18 20:55:43 we commit the value: 7670285295412316787
+2024/09/18 20:55:43 we send the value: 6155622300007575702
+2024/09/18 20:55:43 server[0] get a command, the log index is 79, the log term is 63
+2024/09/18 20:55:43 server[4] reveive a correct message from server[0]
+2024/09/18 20:55:43 args.PrevLogIndex : 78, args.PrevLogTerm: 63
+2024/09/18 20:55:43 receiver relevant log term: 63
+2024/09/18 20:55:43 server[3] reveive a correct message from server[0]
+2024/09/18 20:55:43 args.PrevLogIndex : 78, args.PrevLogTerm: 63
+2024/09/18 20:55:43 receiver relevant log term: 63
+2024/09/18 20:55:43 leader is 0, its current commitIndex is : 79
+2024/09/18 20:55:43 we commit the value: 6155622300007575702
+2024/09/18 20:55:43 we send the value: 5920332944656507125
+2024/09/18 20:55:43 server[0] get a command, the log index is 80, the log term is 63
+2024/09/18 20:55:43 server[4] reveive a correct message from server[0]
+2024/09/18 20:55:43 args.PrevLogIndex : 79, args.PrevLogTerm: 63
+2024/09/18 20:55:43 receiver relevant log term: 63
+2024/09/18 20:55:43 server[3] reveive a correct message from server[0]
+2024/09/18 20:55:43 args.PrevLogIndex : 79, args.PrevLogTerm: 63
+2024/09/18 20:55:43 receiver relevant log term: 63
+2024/09/18 20:55:43 leader is 0, its current commitIndex is : 80
+2024/09/18 20:55:43 we commit the value: 5920332944656507125
+2024/09/18 20:55:43 we send the value: 3205662489374633246
+2024/09/18 20:55:43 server[0] get a command, the log index is 81, the log term is 63
+2024/09/18 20:55:43 server[4] reveive a correct message from server[0]
+2024/09/18 20:55:43 args.PrevLogIndex : 80, args.PrevLogTerm: 63
+2024/09/18 20:55:43 receiver relevant log term: 63
+2024/09/18 20:55:43 server[3] reveive a correct message from server[0]
+2024/09/18 20:55:43 args.PrevLogIndex : 80, args.PrevLogTerm: 63
+2024/09/18 20:55:43 receiver relevant log term: 63
+2024/09/18 20:55:43 leader is 0, its current commitIndex is : 81
+2024/09/18 20:55:43 we commit the value: 3205662489374633246
+2024/09/18 20:55:43 we send the value: 2263857017765258624
+2024/09/18 20:55:43 server[0] get a command, the log index is 82, the log term is 63
+2024/09/18 20:55:44 server[4] reveive a correct message from server[0]
+2024/09/18 20:55:44 args.PrevLogIndex : 81, args.PrevLogTerm: 63
+2024/09/18 20:55:44 receiver relevant log term: 63
+2024/09/18 20:55:44 server[3] reveive a correct message from server[0]
+2024/09/18 20:55:44 args.PrevLogIndex : 81, args.PrevLogTerm: 63
+2024/09/18 20:55:44 receiver relevant log term: 63
+2024/09/18 20:55:44 leader is 0, its current commitIndex is : 82
+2024/09/18 20:55:44 we commit the value: 2263857017765258624
+2024/09/18 20:55:44 we send the value: 3344389461160620198
+2024/09/18 20:55:44 server[0] get a command, the log index is 83, the log term is 63
+2024/09/18 20:55:44 server[4] reveive a correct message from server[0]
+2024/09/18 20:55:44 args.PrevLogIndex : 82, args.PrevLogTerm: 63
+2024/09/18 20:55:44 receiver relevant log term: 63
+2024/09/18 20:55:44 server[3] reveive a correct message from server[0]
+2024/09/18 20:55:44 args.PrevLogIndex : 82, args.PrevLogTerm: 63
+2024/09/18 20:55:44 receiver relevant log term: 63
+2024/09/18 20:55:44 leader is 0, its current commitIndex is : 83
+2024/09/18 20:55:44 we commit the value: 3344389461160620198
+2024/09/18 20:55:44 we send the value: 7918631127166683335
+2024/09/18 20:55:44 server[0] get a command, the log index is 84, the log term is 63
+2024/09/18 20:55:44 server[4] reveive a correct message from server[0]
+2024/09/18 20:55:44 args.PrevLogIndex : 83, args.PrevLogTerm: 63
+2024/09/18 20:55:44 receiver relevant log term: 63
+2024/09/18 20:55:44 server[3] reveive a correct message from server[0]
+2024/09/18 20:55:44 args.PrevLogIndex : 83, args.PrevLogTerm: 63
+2024/09/18 20:55:44 receiver relevant log term: 63
+2024/09/18 20:55:44 leader is 0, its current commitIndex is : 84
+2024/09/18 20:55:44 we commit the value: 7918631127166683335
+2024/09/18 20:55:44 we send the value: 8299308269418145317
+2024/09/18 20:55:44 server[0] get a command, the log index is 85, the log term is 63
+2024/09/18 20:55:44 server[4] reveive a correct message from server[0]
+2024/09/18 20:55:44 args.PrevLogIndex : 84, args.PrevLogTerm: 63
+2024/09/18 20:55:44 receiver relevant log term: 63
+2024/09/18 20:55:44 server[3] reveive a correct message from server[0]
+2024/09/18 20:55:44 args.PrevLogIndex : 84, args.PrevLogTerm: 63
+2024/09/18 20:55:44 receiver relevant log term: 63
+2024/09/18 20:55:44 leader is 0, its current commitIndex is : 85
+2024/09/18 20:55:45 we commit the value: 8299308269418145317
+2024/09/18 20:55:45 we send the value: 6647738079830776718
+2024/09/18 20:55:45 server[0] get a command, the log index is 86, the log term is 63
+2024/09/18 20:55:45 server[4] reveive a correct message from server[0]
+2024/09/18 20:55:45 args.PrevLogIndex : 85, args.PrevLogTerm: 63
+2024/09/18 20:55:45 receiver relevant log term: 63
+2024/09/18 20:55:45 server[3] reveive a correct message from server[0]
+2024/09/18 20:55:45 args.PrevLogIndex : 85, args.PrevLogTerm: 63
+2024/09/18 20:55:45 receiver relevant log term: 63
+2024/09/18 20:55:45 leader is 0, its current commitIndex is : 86
+2024/09/18 20:55:45 we commit the value: 6647738079830776718
+2024/09/18 20:55:45 we send the value: 6470344400225080432
+2024/09/18 20:55:45 server[0] get a command, the log index is 87, the log term is 63
+2024/09/18 20:55:45 server[4] reveive a correct message from server[0]
+2024/09/18 20:55:45 args.PrevLogIndex : 86, args.PrevLogTerm: 63
+2024/09/18 20:55:45 receiver relevant log term: 63
+2024/09/18 20:55:45 server[3] reveive a correct message from server[0]
+2024/09/18 20:55:45 args.PrevLogIndex : 86, args.PrevLogTerm: 63
+2024/09/18 20:55:45 receiver relevant log term: 63
+2024/09/18 20:55:45 leader is 0, its current commitIndex is : 87
+2024/09/18 20:55:45 we commit the value: 6470344400225080432
+2024/09/18 20:55:45 we send the value: 7473801680070361664
+2024/09/18 20:55:45 server[0] get a command, the log index is 88, the log term is 63
+2024/09/18 20:55:45 server[4] reveive a correct message from server[0]
+2024/09/18 20:55:45 args.PrevLogIndex : 87, args.PrevLogTerm: 63
+2024/09/18 20:55:45 receiver relevant log term: 63
+2024/09/18 20:55:45 server[3] reveive a correct message from server[0]
+2024/09/18 20:55:45 args.PrevLogIndex : 87, args.PrevLogTerm: 63
+2024/09/18 20:55:45 receiver relevant log term: 63
+2024/09/18 20:55:45 leader is 0, its current commitIndex is : 88
+2024/09/18 20:55:46 we commit the value: 7473801680070361664
+2024/09/18 20:55:46 we send the value: 2861628634040043544
+2024/09/18 20:55:46 server[0] get a command, the log index is 89, the log term is 63
+2024/09/18 20:55:46 server[4] reveive a correct message from server[0]
+2024/09/18 20:55:46 args.PrevLogIndex : 88, args.PrevLogTerm: 63
+2024/09/18 20:55:46 receiver relevant log term: 63
+2024/09/18 20:55:46 server[3] reveive a correct message from server[0]
+2024/09/18 20:55:46 args.PrevLogIndex : 88, args.PrevLogTerm: 63
+2024/09/18 20:55:46 receiver relevant log term: 63
+2024/09/18 20:55:46 leader is 0, its current commitIndex is : 89
+2024/09/18 20:55:46 we commit the value: 2861628634040043544
+2024/09/18 20:55:46 we send the value: 5691244607068272013
+2024/09/18 20:55:46 server[0] get a command, the log index is 90, the log term is 63
+2024/09/18 20:55:46 server[4] reveive a correct message from server[0]
+2024/09/18 20:55:46 args.PrevLogIndex : 89, args.PrevLogTerm: 63
+2024/09/18 20:55:46 receiver relevant log term: 63
+2024/09/18 20:55:46 server[3] reveive a correct message from server[0]
+2024/09/18 20:55:46 args.PrevLogIndex : 89, args.PrevLogTerm: 63
+2024/09/18 20:55:46 receiver relevant log term: 63
+2024/09/18 20:55:46 leader is 0, its current commitIndex is : 90
+2024/09/18 20:55:46 we commit the value: 5691244607068272013
+2024/09/18 20:55:46 we send the value: 1688721180764920904
+2024/09/18 20:55:46 server[0] get a command, the log index is 91, the log term is 63
+2024/09/18 20:55:46 server[4] reveive a correct message from server[0]
+2024/09/18 20:55:46 args.PrevLogIndex : 90, args.PrevLogTerm: 63
+2024/09/18 20:55:46 receiver relevant log term: 63
+2024/09/18 20:55:46 server[3] reveive a correct message from server[0]
+2024/09/18 20:55:46 args.PrevLogIndex : 90, args.PrevLogTerm: 63
+2024/09/18 20:55:46 receiver relevant log term: 63
+2024/09/18 20:55:46 leader is 0, its current commitIndex is : 91
+2024/09/18 20:55:46 we commit the value: 1688721180764920904
+2024/09/18 20:55:46 we send the value: 3680954295263629212
+2024/09/18 20:55:46 server[0] get a command, the log index is 92, the log term is 63
+2024/09/18 20:55:47 server[4] reveive a correct message from server[0]
+2024/09/18 20:55:47 args.PrevLogIndex : 91, args.PrevLogTerm: 63
+2024/09/18 20:55:47 receiver relevant log term: 63
+2024/09/18 20:55:47 server[3] reveive a correct message from server[0]
+2024/09/18 20:55:47 args.PrevLogIndex : 91, args.PrevLogTerm: 63
+2024/09/18 20:55:47 receiver relevant log term: 63
+2024/09/18 20:55:47 leader is 0, its current commitIndex is : 92
+2024/09/18 20:55:47 we commit the value: 3680954295263629212
+2024/09/18 20:55:47 we send the value: 9057239167025992112
+2024/09/18 20:55:47 server[0] get a command, the log index is 93, the log term is 63
+2024/09/18 20:55:47 server[4] reveive a correct message from server[0]
+2024/09/18 20:55:47 args.PrevLogIndex : 92, args.PrevLogTerm: 63
+2024/09/18 20:55:47 receiver relevant log term: 63
+2024/09/18 20:55:47 server[3] reveive a correct message from server[0]
+2024/09/18 20:55:47 args.PrevLogIndex : 92, args.PrevLogTerm: 63
+2024/09/18 20:55:47 receiver relevant log term: 63
+2024/09/18 20:55:47 leader is 0, its current commitIndex is : 93
+2024/09/18 20:55:47 we commit the value: 9057239167025992112
+2024/09/18 20:55:47 we send the value: 6100445265778011260
+2024/09/18 20:55:47 server[0] get a command, the log index is 94, the log term is 63
+2024/09/18 20:55:47 server[4] reveive a correct message from server[0]
+2024/09/18 20:55:47 args.PrevLogIndex : 93, args.PrevLogTerm: 63
+2024/09/18 20:55:47 receiver relevant log term: 63
+2024/09/18 20:55:47 server[3] reveive a correct message from server[0]
+2024/09/18 20:55:47 args.PrevLogIndex : 93, args.PrevLogTerm: 63
+2024/09/18 20:55:47 receiver relevant log term: 63
+2024/09/18 20:55:47 leader is 0, its current commitIndex is : 94
+2024/09/18 20:55:47 we commit the value: 6100445265778011260
+2024/09/18 20:55:47 we send the value: 7441302843813274458
+2024/09/18 20:55:47 server[0] get a command, the log index is 95, the log term is 63
+2024/09/18 20:55:47 server[4] reveive a correct message from server[0]
+2024/09/18 20:55:47 args.PrevLogIndex : 94, args.PrevLogTerm: 63
+2024/09/18 20:55:47 receiver relevant log term: 63
+2024/09/18 20:55:47 server[3] reveive a correct message from server[0]
+2024/09/18 20:55:47 args.PrevLogIndex : 94, args.PrevLogTerm: 63
+2024/09/18 20:55:47 receiver relevant log term: 63
+2024/09/18 20:55:47 leader is 0, its current commitIndex is : 95
+2024/09/18 20:55:48 we commit the value: 7441302843813274458
+2024/09/18 20:55:48 we send the value: 1867205087335121626
+2024/09/18 20:55:48 server[0] get a command, the log index is 96, the log term is 63
+2024/09/18 20:55:48 server[4] reveive a correct message from server[0]
+2024/09/18 20:55:48 args.PrevLogIndex : 95, args.PrevLogTerm: 63
+2024/09/18 20:55:48 receiver relevant log term: 63
+2024/09/18 20:55:48 server[3] reveive a correct message from server[0]
+2024/09/18 20:55:48 args.PrevLogIndex : 95, args.PrevLogTerm: 63
+2024/09/18 20:55:48 receiver relevant log term: 63
+2024/09/18 20:55:48 leader is 0, its current commitIndex is : 96
+2024/09/18 20:55:48 we commit the value: 1867205087335121626
+2024/09/18 20:55:48 we send the value: 412746085958628921
+2024/09/18 20:55:48 server[0] get a command, the log index is 97, the log term is 63
+2024/09/18 20:55:48 server[4] reveive a correct message from server[0]
+2024/09/18 20:55:48 args.PrevLogIndex : 96, args.PrevLogTerm: 63
+2024/09/18 20:55:48 receiver relevant log term: 63
+2024/09/18 20:55:48 server[3] reveive a correct message from server[0]
+2024/09/18 20:55:48 args.PrevLogIndex : 96, args.PrevLogTerm: 63
+2024/09/18 20:55:48 receiver relevant log term: 63
+2024/09/18 20:55:48 leader is 0, its current commitIndex is : 97
+2024/09/18 20:55:48 we commit the value: 412746085958628921
+2024/09/18 20:55:48 we send the value: 3664645126345052474
+2024/09/18 20:55:48 server[0] get a command, the log index is 98, the log term is 63
+2024/09/18 20:55:48 server[4] reveive a correct message from server[0]
+2024/09/18 20:55:48 args.PrevLogIndex : 97, args.PrevLogTerm: 63
+2024/09/18 20:55:48 receiver relevant log term: 63
+2024/09/18 20:55:48 server[3] reveive a correct message from server[0]
+2024/09/18 20:55:48 args.PrevLogIndex : 97, args.PrevLogTerm: 63
+2024/09/18 20:55:48 receiver relevant log term: 63
+2024/09/18 20:55:48 leader is 0, its current commitIndex is : 98
+2024/09/18 20:55:49 we commit the value: 3664645126345052474
+2024/09/18 20:55:49 we send the value: 5090631540138740004
+2024/09/18 20:55:49 server[0] get a command, the log index is 99, the log term is 63
+2024/09/18 20:55:49 server[4] reveive a correct message from server[0]
+2024/09/18 20:55:49 args.PrevLogIndex : 98, args.PrevLogTerm: 63
+2024/09/18 20:55:49 receiver relevant log term: 63
+2024/09/18 20:55:49 server[3] reveive a correct message from server[0]
+2024/09/18 20:55:49 args.PrevLogIndex : 98, args.PrevLogTerm: 63
+2024/09/18 20:55:49 receiver relevant log term: 63
+2024/09/18 20:55:49 leader is 0, its current commitIndex is : 99
+2024/09/18 20:55:49 we commit the value: 5090631540138740004
+2024/09/18 20:55:49 we send the value: 9200688046670246160
+2024/09/18 20:55:49 server[0] get a command, the log index is 100, the log term is 63
+2024/09/18 20:55:49 server[4] reveive a correct message from server[0]
+2024/09/18 20:55:49 args.PrevLogIndex : 99, args.PrevLogTerm: 63
+2024/09/18 20:55:49 receiver relevant log term: 63
+2024/09/18 20:55:49 server[3] reveive a correct message from server[0]
+2024/09/18 20:55:49 args.PrevLogIndex : 99, args.PrevLogTerm: 63
+2024/09/18 20:55:49 receiver relevant log term: 63
+2024/09/18 20:55:49 leader is 0, its current commitIndex is : 100
+2024/09/18 20:55:49 we commit the value: 9200688046670246160
+2024/09/18 20:55:49 we send the value: 3085813793039586807
+2024/09/18 20:55:49 server[0] get a command, the log index is 101, the log term is 63
+2024/09/18 20:55:49 server[4] reveive a correct message from server[0]
+2024/09/18 20:55:49 args.PrevLogIndex : 100, args.PrevLogTerm: 63
+2024/09/18 20:55:49 receiver relevant log term: 63
+2024/09/18 20:55:49 server[3] reveive a correct message from server[0]
+2024/09/18 20:55:49 args.PrevLogIndex : 100, args.PrevLogTerm: 63
+2024/09/18 20:55:49 receiver relevant log term: 63
+2024/09/18 20:55:49 leader is 0, its current commitIndex is : 101
+2024/09/18 20:55:49 we commit the value: 3085813793039586807
+2024/09/18 20:55:49 22222222222
+2024/09/18 20:55:49 we send the value: 7600629604409548791
+2024/09/18 20:55:49 server[2] get a command, the log index is 102, the log term is 4
+2024/09/18 20:55:49 server[2] reveive a correct message from server[0]
+2024/09/18 20:55:49 args.PrevLogIndex : 51, args.PrevLogTerm: 4
+2024/09/18 20:55:49 receiver relevant log term: 4
+2024/09/18 20:55:50 server[2] reveive a correct message from server[0]
+2024/09/18 20:55:50 args.PrevLogIndex : 51, args.PrevLogTerm: 4
+2024/09/18 20:55:50 receiver relevant log term: 4
+2024/09/18 20:55:50 server[2] reveive a correct message from server[0]
+2024/09/18 20:55:50 args.PrevLogIndex : 51, args.PrevLogTerm: 4
+2024/09/18 20:55:50 receiver relevant log term: 4
+2024/09/18 20:55:50 server[2] reveive a correct message from server[0]
+2024/09/18 20:55:50 args.PrevLogIndex : 51, args.PrevLogTerm: 4
+2024/09/18 20:55:50 receiver relevant log term: 4
+2024/09/18 20:55:50 server[2] reveive a correct message from server[0]
+2024/09/18 20:55:50 args.PrevLogIndex : 51, args.PrevLogTerm: 4
+2024/09/18 20:55:50 receiver relevant log term: 4
+2024/09/18 20:55:51 server[0] get a command, the log index is 102, the log term is 69
+2024/09/18 20:55:52 server[4] reveive a correct message from server[0]
+2024/09/18 20:55:52 args.PrevLogIndex : 101, args.PrevLogTerm: 63
+2024/09/18 20:55:52 receiver relevant log term: 63
+2024/09/18 20:55:52 server[1] reveive a correct message from server[0]
+2024/09/18 20:55:52 args.PrevLogIndex : 101, args.PrevLogTerm: 63
+2024/09/18 20:55:52 receiver relevant log term: 4
+2024/09/18 20:55:52 server[2] reveive a correct message from server[0]
+2024/09/18 20:55:52 args.PrevLogIndex : 101, args.PrevLogTerm: 63
+2024/09/18 20:55:52 receiver do not have such log in that index
+2024/09/18 20:55:52 server[3] reveive a correct message from server[0]
+2024/09/18 20:55:52 args.PrevLogIndex : 101, args.PrevLogTerm: 63
+2024/09/18 20:55:52 receiver relevant log term: 63
+2024/09/18 20:55:52 leader is 0, its current commitIndex is : 102
+2024/09/18 20:55:52 server[1] reveive a correct message from server[0]
+2024/09/18 20:55:52 args.PrevLogIndex : 51, args.PrevLogTerm: 4
+2024/09/18 20:55:52 receiver relevant log term: 4
+2024/09/18 20:55:52 server[2] reveive a correct message from server[0]
+2024/09/18 20:55:52 args.PrevLogIndex : 78, args.PrevLogTerm: 63
+2024/09/18 20:55:52 receiver relevant log term: 63
+2024/09/18 20:55:52 leader is 0, its current commitIndex is : 102
+2024/09/18 20:55:52 we commit the value: 7600629604409548791
+2024/09/18 20:55:52 3333333333333
+  ... Passed --  37.1  5 10267 7782324  102
+PASS
+ok  	github.com/Rookie-roob/6.824/src/raft	37.148s
