@@ -169,7 +169,7 @@ func (rf *Raft) readPersist(data []byte) {
 	var votedFor int
 	if d.Decode(&currentTerm) != nil ||
 		d.Decode(&votedFor) != nil ||
-		d.Decode(logs) != nil {
+		d.Decode(&logs) != nil { // 传切片的引用和传切片意义不同
 		fmt.Println("decode error!!!")
 	} else {
 		rf.currentTerm = currentTerm
@@ -600,6 +600,7 @@ func (rf *Raft) AppendEntries(args *AppendEntriesArgs, reply *AppendEntriesReply
 			DPrintf("args.PrevLogIndex : %d, args.PrevLogTerm: %d", args.PrevLogIndex, args.PrevLogTerm)
 			if args.PrevLogIndex >= rf.lastIncludedIndex+len(rf.logs)+1 {
 				DPrintf("receiver do not have such log in that index")
+				DPrintf("receiver's log len: %d", rf.lastIncludedIndex+len(rf.logs))
 			} else if args.PrevLogIndex == rf.lastIncludedIndex {
 				DPrintf("receiver relevant log term: from the beggining")
 			} else {
@@ -631,7 +632,7 @@ func (rf *Raft) AppendEntries(args *AppendEntriesArgs, reply *AppendEntriesReply
 			right := args.PrevLogIndex
 			for left < right {
 				mid := (left + right) >> 1
-				if rf.logs[mid-rf.lastIncludedIndex-1].Term >= args.PrevLogTerm {
+				if rf.logs[mid-rf.lastIncludedIndex-1].Term >= reply.ConflictTerm {
 					right = mid
 				} else {
 					left = mid + 1
