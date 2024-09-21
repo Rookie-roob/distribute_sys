@@ -700,113 +700,90 @@ func (rf *Raft) sendAppendEntries(server int, args *AppendEntriesArgs, reply *Ap
 	if rf.killed() {
 		return false
 	}
-	if len(args.Entries) == 0 {
-		// heartbeat
-		rf.mu.Lock()
-		// both args and reply need to be judged
-		if rf.currentTerm > args.Term {
+	rf.mu.Lock()
+	if rf.currentTerm > args.Term {
+		rf.mu.Unlock()
+		return false
+	}
+	if reply.AppendEntriesError == AppendEntriesError_Killed {
+		rf.mu.Unlock()
+		return false
+	} else if reply.AppendEntriesError == AppendEntriesError_TermOutDate {
+		rf.state = FOLLOWER
+		//DPrintf("leader[%d] becomes the follower", rf.me)
+		if rf.currentTerm < reply.Term {
+			rf.votedFor = -1
+			rf.currentTerm = reply.Term
+			rf.persist()
+		}
+		rf.mu.Unlock()
+	} else if reply.AppendEntriesError == AppendEntriesError_Success {
+		if rf.nextIndex[server] > (args.LeaderLogLastIndex + 1) { // too slow reply, normally not happen
 			rf.mu.Unlock()
 			return false
 		}
-		if rf.currentTerm > reply.Term {
+		if reply.Success && reply.Term == rf.currentTerm && *appendNum <= len(rf.peers)/2 {
+			*appendNum++
+		}
+		rf.nextIndex[server] = (args.LeaderLogLastIndex + 1)
+		if *appendNum > len(rf.peers)/2 {
+			*appendNum = 0
+			//outdate request
+			if (rf.lastIncludedIndex < args.LeaderLogLastIndex && rf.logs[args.LeaderLogLastIndex-rf.lastIncludedIndex-1].Term != rf.currentTerm) ||
+				(rf.lastIncludedIndex == args.LeaderLogLastIndex && rf.lastIncludedTerm != rf.currentTerm) { // commit rule: current term commit cause previous log entries commit. See Figure 8 in paper
+				rf.mu.Unlock()
+				return false
+			}
+			preCommitIndex := rf.commitIndex
+
+			rf.commitIndex = rf.nextIndex[server] - 1
+			// DPrintf("leader is %d, its current commitIndex is : %d", rf.me, rf.commitIndex)
+			if preCommitIndex < rf.commitIndex {
+				//wake up applyCommit
+				rf.cond.Broadcast()
+			}
+		}
+		rf.mu.Unlock()
+	} else if reply.AppendEntriesError == AppendEntriesError_LogLenNotMatch {
+		if args.Term != rf.currentTerm {
 			rf.mu.Unlock()
 			return false
-		} else if rf.currentTerm < reply.Term {
-			rf.state = FOLLOWER
-			rf.votedFor = -1
-			rf.persist()
-			rf.currentTerm = reply.Term
-			rf.electionTimeout = time.Duration(rand.Intn(MAX_ELECTION_TIMEOUT-MIN_ELECTION_TIMEOUT)+MIN_ELECTION_TIMEOUT) * time.Millisecond
-			rf.timer.Reset(rf.electionTimeout)
-			//DPrintf("server[%d] becomes the FOLLOWER, and timeout is %v", rf.me, rf.electionTimeout)
+		}
+		rf.nextIndex[server] = reply.ConflictIndex + 1
+		rf.mu.Unlock()
+	} else if reply.AppendEntriesError == AppendEntriesError_LogNotMatch {
+		if args.Term != rf.currentTerm {
+			rf.mu.Unlock()
+			return false
+		}
+		if reply.ConflictTerm == -1 {
+			rf.nextIndex[server]--
+		} else {
+			//search reply.conflictterm
+			left := rf.lastIncludedIndex + 1
+			right := args.PrevLogIndex
+			for left < right {
+				mid := (left + right + 1) >> 1
+				if rf.logs[mid-rf.lastIncludedIndex-1].Term <= reply.ConflictTerm {
+					left = mid
+				} else {
+					right = mid - 1
+				}
+			}
+			if rf.logs[left-rf.lastIncludedIndex-1].Term == reply.ConflictTerm {
+				rf.nextIndex[server] = left + 1
+			} else {
+				rf.nextIndex[server] = reply.ConflictIndex
+			}
 		}
 		rf.mu.Unlock()
 	} else {
-		rf.mu.Lock()
-		if rf.currentTerm > args.Term {
+		if args.Term != rf.currentTerm {
 			rf.mu.Unlock()
 			return false
 		}
-		if reply.AppendEntriesError == AppendEntriesError_Killed {
-			rf.mu.Unlock()
-			return false
-		} else if reply.AppendEntriesError == AppendEntriesError_TermOutDate {
-			rf.state = FOLLOWER
-			//DPrintf("leader[%d] becomes the follower", rf.me)
-			if rf.currentTerm < reply.Term {
-				rf.votedFor = -1
-				rf.currentTerm = reply.Term
-				rf.persist()
-			}
-			rf.mu.Unlock()
-		} else if reply.AppendEntriesError == AppendEntriesError_Success {
-			if rf.nextIndex[server] > (args.LeaderLogLastIndex + 1) { // too slow reply, normally not happen
-				rf.mu.Unlock()
-				return false
-			}
-			if reply.Success && reply.Term == rf.currentTerm && *appendNum <= len(rf.peers)/2 {
-				*appendNum++
-			}
-			rf.nextIndex[server] = (args.LeaderLogLastIndex + 1)
-			if *appendNum > len(rf.peers)/2 {
-				*appendNum = 0
-				//outdate request
-				if (rf.lastIncludedIndex < args.LeaderLogLastIndex && rf.logs[args.LeaderLogLastIndex-rf.lastIncludedIndex-1].Term != rf.currentTerm) ||
-					(rf.lastIncludedIndex == args.LeaderLogLastIndex && rf.lastIncludedTerm != rf.currentTerm) { // commit rule: current term commit cause previous log entries commit. See Figure 8 in paper
-					rf.mu.Unlock()
-					return false
-				}
-				preCommitIndex := rf.commitIndex
-
-				rf.commitIndex = rf.nextIndex[server] - 1
-				// DPrintf("leader is %d, its current commitIndex is : %d", rf.me, rf.commitIndex)
-				if preCommitIndex < rf.commitIndex {
-					//wake up applyCommit
-					rf.cond.Broadcast()
-				}
-			}
-			rf.mu.Unlock()
-		} else if reply.AppendEntriesError == AppendEntriesError_LogLenNotMatch {
-			if args.Term != rf.currentTerm {
-				rf.mu.Unlock()
-				return false
-			}
-			rf.nextIndex[server] = reply.ConflictIndex + 1
-			rf.mu.Unlock()
-		} else if reply.AppendEntriesError == AppendEntriesError_LogNotMatch {
-			if args.Term != rf.currentTerm {
-				rf.mu.Unlock()
-				return false
-			}
-			if reply.ConflictTerm == -1 {
-				rf.nextIndex[server]--
-			} else {
-				//search reply.conflictterm
-				left := rf.lastIncludedIndex + 1
-				right := args.PrevLogIndex
-				for left < right {
-					mid := (left + right + 1) >> 1
-					if rf.logs[mid-rf.lastIncludedIndex-1].Term <= reply.ConflictTerm {
-						left = mid
-					} else {
-						right = mid - 1
-					}
-				}
-				if rf.logs[left-rf.lastIncludedIndex-1].Term == reply.ConflictTerm {
-					rf.nextIndex[server] = left + 1
-				} else {
-					rf.nextIndex[server] = reply.ConflictIndex
-				}
-			}
-			rf.mu.Unlock()
-		} else {
-			if args.Term != rf.currentTerm {
-				rf.mu.Unlock()
-				return false
-			}
-			rf.nextIndex[server] = reply.ConflictIndex + 1
-			rf.mu.Unlock()
-		}
+		rf.nextIndex[server] = reply.ConflictIndex + 1
+		rf.mu.Unlock()
 	}
 	return true
 }
