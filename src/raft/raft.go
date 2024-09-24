@@ -58,6 +58,7 @@ type ApplyMsg struct {
 	CommandValid bool
 	Command      interface{}
 	CommandIndex int
+	CommandTerm  int
 
 	//Snapshot relevant
 	SnapshotValid bool
@@ -911,6 +912,7 @@ func (rf *Raft) applychecker() {
 		applyMsg := ApplyMsg{
 			CommandValid: true,
 			Command:      command,
+			CommandTerm:  rf.logs[commitIndex-rf.lastIncludedIndex-1].Term,
 			CommandIndex: commitIndex,
 		}
 		rf.applyCh <- applyMsg

@@ -31,9 +31,8 @@ type Op struct {
 }
 
 type CommandReply struct {
-	OpType string
-	Value  string
-	Err    string
+	Value string
+	Err   string
 }
 
 type CommandResult struct {
@@ -52,6 +51,8 @@ type KVServer struct {
 
 	// Your definitions here.
 	commandMap map[int64]CommandResult
+	notifyChan map[int64]chan CommandReply
+	kvdata     map[string]string
 }
 
 func (kv *KVServer) Get(args *GetArgs, reply *GetReply) {
@@ -81,6 +82,18 @@ func (kv *KVServer) killed() bool {
 	return z == 1
 }
 
+func (kv *KVServer) getApplyFromRaft() {
+	for {
+		if kv.killed() {
+			break
+		}
+		select {
+		case applyData := <-kv.applyCh:
+
+		}
+	}
+}
+
 // servers[] contains the ports of the set of
 // servers that will cooperate via Raft to
 // form the fault-tolerant key/value service.
@@ -103,11 +116,14 @@ func StartKVServer(servers []*labrpc.ClientEnd, me int, persister *raft.Persiste
 	kv.maxraftstate = maxraftstate
 
 	// You may need initialization code here.
-
+	kv.commandMap = make(map[int64]CommandResult)
+	kv.notifyChan = make(map[int64]chan CommandReply)
+	kv.kvdata = make(map[string]string)
 	kv.applyCh = make(chan raft.ApplyMsg)
 	kv.rf = raft.Make(servers, me, persister, kv.applyCh)
 
 	// You may need initialization code here.
+	go kv.getApplyFromRaft()
 
 	return kv
 }
