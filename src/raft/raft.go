@@ -629,7 +629,7 @@ func (rf *Raft) AppendEntries(args *AppendEntriesArgs, reply *AppendEntriesReply
 		if (args.PrevLogIndex - rf.lastIncludedIndex - 1) >= 0 {
 			reply.ConflictTerm = rf.logs[args.PrevLogIndex-rf.lastIncludedIndex-1].Term
 			reply.ConflictIndex = -1
-			left := rf.lastIncludedIndex + 1
+			left := int(math.Max(float64(rf.commitIndex), float64(rf.lastIncludedIndex+1)))
 			right := args.PrevLogIndex
 			for left < right {
 				mid := (left + right) >> 1
@@ -736,8 +736,40 @@ func (rf *Raft) sendAppendEntries(server int, args *AppendEntriesArgs, reply *Ap
 			}
 			preCommitIndex := rf.commitIndex
 
-			rf.commitIndex = rf.nextIndex[server] - 1
+			// rf.commitIndex = rf.nextIndex[server] - 1 ; leader新的commitindex不能这么写
 			// DPrintf("leader is %d, its current commitIndex is : %d", rf.me, rf.commitIndex)
+			if rf.lastIncludedIndex == args.LeaderLogLastIndex {
+				rf.commitIndex = args.LeaderCommit
+			} else {
+				newCommitIndex := args.LeaderLogLastIndex
+				for newCommitIndex > preCommitIndex && newCommitIndex > rf.lastIncludedIndex && rf.logs[newCommitIndex-rf.lastIncludedIndex-1].Term == rf.currentTerm {
+					cnt := 0
+					for i, _ := range rf.peers {
+						if i == rf.me {
+							cnt++
+							if cnt > len(rf.peers)/2 {
+								break
+							}
+							continue
+						}
+						if rf.nextIndex[i] > newCommitIndex {
+							cnt++
+							if cnt > len(rf.peers)/2 {
+								break
+							}
+						}
+					}
+					if cnt > len(rf.peers)/2 {
+						break
+					}
+					newCommitIndex--
+				}
+				if newCommitIndex == preCommitIndex || newCommitIndex == rf.lastIncludedIndex || rf.logs[newCommitIndex-rf.lastIncludedIndex-1].Term == rf.currentTerm {
+					rf.commitIndex = newCommitIndex
+				} else {
+					rf.commitIndex = preCommitIndex
+				}
+			}
 			if preCommitIndex < rf.commitIndex {
 				//wake up applyCommit
 				rf.cond.Broadcast()
@@ -760,7 +792,7 @@ func (rf *Raft) sendAppendEntries(server int, args *AppendEntriesArgs, reply *Ap
 			rf.nextIndex[server]--
 		} else {
 			//search reply.conflictterm
-			left := rf.lastIncludedIndex + 1
+			left := int(math.Max(float64(rf.commitIndex), float64(rf.lastIncludedIndex+1)))
 			right := args.PrevLogIndex
 			for left < right {
 				mid := (left + right + 1) >> 1
@@ -907,11 +939,12 @@ func (rf *Raft) applychecker() {
 		rf.lastApplied++
 		commitIndex := rf.lastApplied // should commit in index order
 		command := rf.logs[commitIndex-rf.lastIncludedIndex-1].LogDetails
+		commandTerm := rf.logs[commitIndex-rf.lastIncludedIndex-1].Term // 在这里同步，把值都安全地取出来，因为logs是可能在appendEntries中被修改的！！！
 		rf.mu.Unlock()
 		applyMsg := ApplyMsg{
 			CommandValid: true,
 			Command:      command,
-			CommandTerm:  rf.logs[commitIndex-rf.lastIncludedIndex-1].Term,
+			CommandTerm:  commandTerm,
 			CommandIndex: commitIndex,
 		}
 		rf.applyCh <- applyMsg

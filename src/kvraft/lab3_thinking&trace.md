@@ -4,3 +4,7 @@
 * 那么对于之前term大多数server都已经落到log上，而且已经commit，在即将从raft层到server的state machine时，新的term开始了呢？
 * 新的leader肯定是会包含这个commit后但还没apply的log的，因此会在新leader进行apply，对于client，会超时重发，最后在新的leader那儿得到apply的结果。
 * commit过后的日志条目肯定会一直在之后的leader中，而且leader只会append日志（除了快照），在leader中commit的顺序就是我们操作的顺序，所以我们的notifychan以commitIndex作为字典的key！
+* 一定要注意Server中的args传到raft的start中时，不能直接传引用，这样会直接导致到了raft中的为server层中的引用，之后会直接空指针异常！要把里面的key，value等值拷贝到op中
+* apply statemachine这个操作是每个server都需要的！（但是不能重复apply到状态机）但是响应 rpc只有leader才行
+* 为什么需要上锁？
+* Get，PutAppend协程会读取及修改commandMap以及notifyChan，而processApplyFromRaft也会对于其中的成员进行访问及修改，这里的一个优化是对哦于commandMap可以是可以上读锁的，多个读不影响。

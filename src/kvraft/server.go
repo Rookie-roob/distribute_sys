@@ -44,7 +44,7 @@ type CommandResult struct {
 }
 
 type KVServer struct {
-	mu      sync.Mutex
+	mu      sync.RWMutex
 	me      int
 	rf      *raft.Raft
 	applyCh chan raft.ApplyMsg
@@ -62,7 +62,7 @@ func (kv *KVServer) getNotifyChan(logIndex int) chan CommandReply {
 	_, ok := kv.notifyChan[logIndex]
 	if !ok {
 		kv.notifyChan[logIndex] = make(chan CommandReply)
-	}
+	} // 万一这一步之后，返回之前，就直接被delete掉这个map条目，因此外面需要加锁
 	return kv.notifyChan[logIndex]
 }
 
@@ -74,13 +74,15 @@ func (kv *KVServer) Get(args *GetArgs, reply *GetReply) {
 		Value:     "",
 		ClientID:  args.ClientID,
 		CommandID: args.CommandID,
-	}
+	} // 注意这里一定要拷贝一波，不能直接传args的引用到Start中
 	index, _, isLeader := kv.rf.Start(op)
 	if !isLeader {
 		reply.Err = GetErrWrongLeader
 		return
 	}
-	ch := kv.getNotifyChan(index)
+	kv.mu.Lock()
+	ch := kv.getNotifyChan(index) // 相当于让get chan的这一步原子
+	kv.mu.Unlock()
 	select {
 	case commandReply := <-ch:
 		reply.Err = Err(commandReply.Err)
@@ -92,7 +94,9 @@ func (kv *KVServer) Get(args *GetArgs, reply *GetReply) {
 	}
 	// 这里异步是完全没问题的，因为apply的logindex只会往前涨
 	go func() {
+		kv.mu.Lock()
 		delete(kv.notifyChan, index)
+		kv.mu.Unlock()
 	}()
 }
 
@@ -104,17 +108,22 @@ func (kv *KVServer) PutAppend(args *PutAppendArgs, reply *PutAppendReply) {
 		Value:     args.Value,
 		ClientID:  args.ClientID,
 		CommandID: args.CommandID,
+	} // 注意这里一定要拷贝一波，不能直接传args的引用到Start中
+	kv.mu.RLock()
+	if lastReply, ok := kv.commandMap[args.ClientID]; ok && lastReply.lastCommandID >= args.CommandID { //要是重复的话，连raft层都没必要传入，直接返回结果就可以
+		reply.Err = Err(lastReply.commandReply.Err)
+		kv.mu.RUnlock()
+		return
 	}
+	kv.mu.RUnlock()
 	index, _, isLeader := kv.rf.Start(op)
 	if !isLeader {
 		reply.Err = PutAppendErrWrongLeader
 		return
 	}
-	if lastReply, ok := kv.commandMap[args.ClientID]; ok && lastReply.lastCommandID == args.CommandID {
-		reply.Err = Err(lastReply.commandReply.Err)
-		return
-	}
+	kv.mu.Lock()
 	ch := kv.getNotifyChan(index)
+	kv.mu.Unlock()
 	select {
 	case commandReply := <-ch:
 		reply.Err = Err(commandReply.Err)
@@ -124,7 +133,9 @@ func (kv *KVServer) PutAppend(args *PutAppendArgs, reply *PutAppendReply) {
 	}
 	// 这里异步是完全没问题的，因为apply的logindex只会往前涨
 	go func() {
+		kv.mu.Lock()
 		delete(kv.notifyChan, index)
+		kv.mu.Unlock()
 	}()
 }
 
@@ -203,17 +214,21 @@ func (kv *KVServer) processApplyFromRaft() {
 		select {
 		case applyData := <-kv.applyCh:
 			if applyData.CommandValid {
+				kv.mu.Lock()
 				op := applyData.Command.(Op)
+				// apply statemachine这个操作是每个server都需要的！
 				commandReply := kv.applyToServerStateMachine(op)
 				var term int
 				var isLeader bool
 				term, isLeader = kv.rf.GetState()
 				if (!isLeader) || term != applyData.CommandTerm {
+					kv.mu.Unlock()
 					continue
 				}
 				logIndex := applyData.CommandIndex
 				ch := kv.getNotifyChan(logIndex)
 				ch <- commandReply
+				kv.mu.Unlock()
 			}
 		}
 	}
