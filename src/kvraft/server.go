@@ -68,7 +68,14 @@ func (kv *KVServer) getNotifyChan(logIndex int) chan CommandReply {
 
 func (kv *KVServer) Get(args *GetArgs, reply *GetReply) {
 	// Your code here.
-	index, _, isLeader := kv.rf.Start(args)
+	op := Op{
+		OpType:    "Get",
+		Key:       args.Key,
+		Value:     "",
+		ClientID:  args.ClientID,
+		CommandID: args.CommandID,
+	}
+	index, _, isLeader := kv.rf.Start(op)
 	if !isLeader {
 		reply.Err = GetErrWrongLeader
 		return
@@ -91,7 +98,14 @@ func (kv *KVServer) Get(args *GetArgs, reply *GetReply) {
 
 func (kv *KVServer) PutAppend(args *PutAppendArgs, reply *PutAppendReply) {
 	// Your code here.
-	index, _, isLeader := kv.rf.Start(args)
+	op := Op{
+		OpType:    args.Op,
+		Key:       args.Key,
+		Value:     args.Value,
+		ClientID:  args.ClientID,
+		CommandID: args.CommandID,
+	}
+	index, _, isLeader := kv.rf.Start(op)
 	if !isLeader {
 		reply.Err = PutAppendErrWrongLeader
 		return

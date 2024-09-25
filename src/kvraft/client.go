@@ -3,9 +3,12 @@ package kvraft
 import (
 	"crypto/rand"
 	"math/big"
+	"time"
 
 	"github.com/Rookie-roob/6.824/src/labrpc"
 )
+
+const RetryInterval = 100 * time.Millisecond
 
 type Clerk struct {
 	servers []*labrpc.ClientEnd
@@ -60,6 +63,7 @@ func (ck *Clerk) Get(key string) string {
 		ok := ck.servers[i].Call("KVServer.Get", &getArgs, &getReply)
 		if !ok || getReply.Err == GetErrWrongLeader || getReply.Err == GetErrTimeout {
 			i = (i + 1) % (len(ck.servers))
+			time.Sleep(RetryInterval)
 			continue
 		}
 		ck.lastLeaderID = getReply.LeaderID
@@ -95,6 +99,7 @@ func (ck *Clerk) PutAppend(key string, value string, op string) {
 		ok := ck.servers[i].Call("KVServer.PutAppend", &putAppendArgs, &putAppendReply)
 		if !ok || putAppendReply.Err == PutAppendErrWrongLeader || putAppendReply.Err == PutAppendErrTimeout {
 			i = (i + 1) % (len(ck.servers))
+			time.Sleep(RetryInterval)
 			continue
 		}
 		ck.lastLeaderID = putAppendReply.LeaderID
