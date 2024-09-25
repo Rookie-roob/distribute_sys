@@ -4,13 +4,16 @@ import (
 	"log"
 	"sync"
 	"sync/atomic"
+	"time"
 
 	"github.com/Rookie-roob/6.824/src/labgob"
 	"github.com/Rookie-roob/6.824/src/labrpc"
 	"github.com/Rookie-roob/6.824/src/raft"
 )
 
-const Debug = 0
+const Debug = 1
+
+const RequstTimeout = 600
 
 func DPrintf(format string, a ...interface{}) (n int, err error) {
 	if Debug > 0 {
@@ -51,16 +54,64 @@ type KVServer struct {
 
 	// Your definitions here.
 	commandMap map[int64]CommandResult
-	notifyChan map[int64]chan CommandReply
+	notifyChan map[int]chan CommandReply //log index为key
 	kvdata     map[string]string
+}
+
+func (kv *KVServer) getNotifyChan(logIndex int) chan CommandReply {
+	_, ok := kv.notifyChan[logIndex]
+	if !ok {
+		kv.notifyChan[logIndex] = make(chan CommandReply)
+	}
+	return kv.notifyChan[logIndex]
 }
 
 func (kv *KVServer) Get(args *GetArgs, reply *GetReply) {
 	// Your code here.
+	index, _, isLeader := kv.rf.Start(args)
+	if !isLeader {
+		reply.Err = GetErrWrongLeader
+		return
+	}
+	ch := kv.getNotifyChan(index)
+	select {
+	case commandReply := <-ch:
+		reply.Err = Err(commandReply.Err)
+		reply.Value = commandReply.Value
+		reply.LeaderID = kv.me
+	case <-time.After(time.Duration(RequstTimeout) * time.Millisecond):
+		reply.Err = GetErrTimeout
+		reply.Value = ""
+	}
+	// 这里异步是完全没问题的，因为apply的logindex只会往前涨
+	go func() {
+		delete(kv.notifyChan, index)
+	}()
 }
 
 func (kv *KVServer) PutAppend(args *PutAppendArgs, reply *PutAppendReply) {
 	// Your code here.
+	index, _, isLeader := kv.rf.Start(args)
+	if !isLeader {
+		reply.Err = PutAppendErrWrongLeader
+		return
+	}
+	if lastReply, ok := kv.commandMap[args.ClientID]; ok && lastReply.lastCommandID == args.CommandID {
+		reply.Err = Err(lastReply.commandReply.Err)
+		return
+	}
+	ch := kv.getNotifyChan(index)
+	select {
+	case commandReply := <-ch:
+		reply.Err = Err(commandReply.Err)
+		reply.LeaderID = kv.me
+	case <-time.After(time.Duration(RequstTimeout) * time.Millisecond):
+		reply.Err = PutAppendErrTimeout
+	}
+	// 这里异步是完全没问题的，因为apply的logindex只会往前涨
+	go func() {
+		delete(kv.notifyChan, index)
+	}()
 }
 
 // the tester calls Kill() when a KVServer instance won't
@@ -82,14 +133,74 @@ func (kv *KVServer) killed() bool {
 	return z == 1
 }
 
-func (kv *KVServer) getApplyFromRaft() {
+func (kv *KVServer) checkCommandID(curCommandID int64, clientID int64) bool { // return true means overlap request
+	recordMaxCommand, ok := kv.commandMap[clientID]
+	return ok && recordMaxCommand.lastCommandID >= curCommandID
+}
+
+func (kv *KVServer) applyToServerStateMachine(op Op) CommandReply {
+	commandReply := CommandReply{}
+	if op.OpType == "Get" {
+		var ok bool
+		commandReply.Value, ok = kv.kvdata[op.Key]
+		if !ok {
+			commandReply.Err = GetErrNoKey
+		} else {
+			commandReply.Err = GetOK
+		}
+	} else if op.OpType == "Put" {
+		if kv.checkCommandID(op.CommandID, op.ClientID) {
+			commandReply = kv.commandMap[op.ClientID].commandReply
+		} else {
+			kv.kvdata[op.Key] = op.Value
+			commandReply.Err = PutAppendOK
+			commandResult := CommandResult{
+				lastCommandID: op.CommandID,
+				commandReply:  commandReply,
+			}
+			kv.commandMap[op.ClientID] = commandResult
+		}
+	} else {
+		if kv.checkCommandID(op.CommandID, op.ClientID) {
+			commandReply = kv.commandMap[op.ClientID].commandReply
+		} else {
+			_, ok := kv.kvdata[op.Key]
+			if !ok {
+				kv.kvdata[op.Key] = op.Value
+			} else {
+				kv.kvdata[op.Key] += op.Value
+			}
+			commandReply.Err = PutAppendOK
+			commandResult := CommandResult{
+				lastCommandID: op.CommandID,
+				commandReply:  commandReply,
+			}
+			kv.commandMap[op.ClientID] = commandResult
+		}
+	}
+	return commandReply
+}
+
+func (kv *KVServer) processApplyFromRaft() {
 	for {
 		if kv.killed() {
 			break
 		}
 		select {
 		case applyData := <-kv.applyCh:
-
+			if applyData.CommandValid {
+				op := applyData.Command.(Op)
+				commandReply := kv.applyToServerStateMachine(op)
+				var term int
+				var isLeader bool
+				term, isLeader = kv.rf.GetState()
+				if (!isLeader) || term != applyData.CommandTerm {
+					continue
+				}
+				logIndex := applyData.CommandIndex
+				ch := kv.getNotifyChan(logIndex)
+				ch <- commandReply
+			}
 		}
 	}
 }
@@ -117,13 +228,13 @@ func StartKVServer(servers []*labrpc.ClientEnd, me int, persister *raft.Persiste
 
 	// You may need initialization code here.
 	kv.commandMap = make(map[int64]CommandResult)
-	kv.notifyChan = make(map[int64]chan CommandReply)
+	kv.notifyChan = make(map[int]chan CommandReply)
 	kv.kvdata = make(map[string]string)
 	kv.applyCh = make(chan raft.ApplyMsg)
 	kv.rf = raft.Make(servers, me, persister, kv.applyCh)
 
 	// You may need initialization code here.
-	go kv.getApplyFromRaft()
+	go kv.processApplyFromRaft()
 
 	return kv
 }

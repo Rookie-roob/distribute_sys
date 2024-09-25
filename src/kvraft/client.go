@@ -56,10 +56,10 @@ func (ck *Clerk) Get(key string) string {
 	}
 	i := ck.lastLeaderID
 	for {
-		i = (i + 1) % (len(ck.servers))
 		getReply := GetReply{}
 		ok := ck.servers[i].Call("KVServer.Get", &getArgs, &getReply)
 		if !ok || getReply.Err == GetErrWrongLeader || getReply.Err == GetErrTimeout {
+			i = (i + 1) % (len(ck.servers))
 			continue
 		}
 		ck.lastLeaderID = getReply.LeaderID
@@ -91,10 +91,10 @@ func (ck *Clerk) PutAppend(key string, value string, op string) {
 	}
 	i := ck.lastLeaderID
 	for {
-		i = (i + 1) % (len(ck.servers))
 		putAppendReply := PutAppendReply{}
 		ok := ck.servers[i].Call("KVServer.PutAppend", &putAppendArgs, &putAppendReply)
 		if !ok || putAppendReply.Err == PutAppendErrWrongLeader || putAppendReply.Err == PutAppendErrTimeout {
+			i = (i + 1) % (len(ck.servers))
 			continue
 		}
 		ck.lastLeaderID = putAppendReply.LeaderID

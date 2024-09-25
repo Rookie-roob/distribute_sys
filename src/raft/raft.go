@@ -582,7 +582,7 @@ func (rf *Raft) AppendEntries(args *AppendEntriesArgs, reply *AppendEntriesReply
 		return
 	}
 	rf.mu.Lock()
-	if args.Term < rf.currentTerm || (len(args.Entries) > 0 && args.PrevLogIndex < rf.lastIncludedIndex) { //request out of date, do not reset timer
+	if args.Term < rf.currentTerm || args.PrevLogIndex < rf.lastIncludedIndex { //request out of date, do not reset timer
 		reply.Success = false
 		reply.Term = rf.currentTerm
 		reply.AppendEntriesError = AppendEntriesError_TermOutDate
@@ -692,7 +692,6 @@ func (rf *Raft) sendAppendEntries(server int, args *AppendEntriesArgs, reply *Ap
 		if rf.killed() {
 			return false
 		}
-
 		ok := rf.peers[server].Call("Raft.AppendEntries", args, reply)
 		if ok {
 			break
