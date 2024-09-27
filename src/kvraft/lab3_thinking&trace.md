@@ -8,3 +8,7 @@
 * apply statemachine这个操作是每个server都需要的！（但是不能重复apply到状态机）但是响应 rpc只有leader才行
 * 为什么需要上锁？
 * Get，PutAppend协程会读取及修改commandMap以及notifyChan，而processApplyFromRaft也会对于其中的成员进行访问及修改，这里的一个优化是对哦于commandMap可以是可以上读锁的，多个读不影响。
+* 在有snapshot的情况下，lastIncludedIndex以及lastIncludedTerm也要持久化，不然reboot后根本就不知道日志index开始点
+* raft server reboot时还要对于lastApplied以及commitIndex进行重新赋值，因为snapshot后lastApplied以及commitIndex可能不是从0开始
+* 每个server都会进行主动snapshot的！！！写代码的时候不要写成只有leader才会！
+* snapshot的receiver（也就是在被动snapshot时）对于新的commitIndex以及lastApplied注意要取最大值，因为可能此时receiver的日志也在涨的！！！

@@ -55,13 +55,12 @@ const (
 // ApplyMsg, but set CommandValid to false for these other uses.
 */
 type ApplyMsg struct {
-	CommandValid bool
+	CommandValid bool // 为false的话表示为快照消息
 	Command      interface{}
 	CommandIndex int
 	CommandTerm  int
 
 	//Snapshot relevant
-	SnapshotValid bool
 	Snapshot      []byte
 	SnapshotIndex int
 	SnapshotTerm  int
@@ -103,7 +102,9 @@ type Raft struct {
 	//Snapshot state
 	lastIncludedIndex int
 	lastIncludedTerm  int
-	snapshotCmd       []byte
+	snapshotData      []byte
+	snapshotIndex     int
+	snapshotTerm      int
 }
 
 // return currentTerm and whether this server
@@ -139,6 +140,8 @@ func (rf *Raft) persist() {
 	e.Encode(rf.currentTerm)
 	e.Encode(rf.votedFor)
 	e.Encode(rf.logs)
+	e.Encode(rf.lastIncludedIndex)
+	e.Encode(rf.lastIncludedTerm)
 	data := w.Bytes()
 	rf.persister.SaveRaftState(data)
 }
@@ -168,14 +171,22 @@ func (rf *Raft) readPersist(data []byte) {
 	var currentTerm int
 	var logs []LogEntry
 	var votedFor int
+	var lastIncludedIndex int
+	var lastIncludedTerm int // 在有snapshot的情况下，lastIncludedIndex以及lastIncludedTerm也要持久化，不然reboot后根本就不知道日志index开始点
 	if d.Decode(&currentTerm) != nil ||
 		d.Decode(&votedFor) != nil ||
-		d.Decode(&logs) != nil { // 传切片的引用和传切片意义不同
+		d.Decode(&logs) != nil ||
+		d.Decode(&lastIncludedIndex) != nil ||
+		d.Decode(&lastIncludedTerm) != nil { // 传切片的引用和传切片意义不同
 		fmt.Println("decode error!!!")
 	} else {
+		rf.mu.Lock()
 		rf.currentTerm = currentTerm
 		rf.logs = logs
 		rf.votedFor = votedFor
+		rf.lastIncludedIndex = lastIncludedIndex
+		rf.lastIncludedTerm = lastIncludedTerm
+		rf.mu.Unlock()
 	}
 }
 
@@ -495,14 +506,11 @@ func (rf *Raft) InstallSnapshot(args *InstallSnapshotArgs, reply *InstallSnapsho
 		rf.lastIncludedTerm = args.LastIncludedTerm
 	}
 	rf.persist()
-	rf.applyCh <- ApplyMsg{
-		SnapshotValid: true,
-		SnapshotIndex: args.LastIncludedIndex,
-		Snapshot:      args.Data,
-		SnapshotTerm:  args.LastIncludedTerm,
-	}
-	rf.lastApplied = rf.lastIncludedIndex
-	rf.commitIndex = rf.lastApplied
+	rf.lastApplied = Max(rf.lastIncludedIndex, rf.lastApplied)
+	rf.commitIndex = Max(rf.lastIncludedIndex, rf.commitIndex) //注意这里要取最大值，因为可能此时receiver的日志也在涨的！！！
+	rf.snapshotData = args.Data
+	rf.snapshotIndex = args.LastIncludedIndex
+	rf.snapshotTerm = args.LastIncludedTerm
 	reply.Term = rf.currentTerm
 	rf.mu.Unlock()
 	reply.SnapError = InstallSnapshotError_Success
@@ -513,9 +521,15 @@ func (rf *Raft) sendInstallSnapshot(server int, args *InstallSnapshotArgs, reply
 		return false
 	}
 	for {
+		if rf.killed() {
+			return false
+		}
 		ok := rf.peers[server].Call("Raft.InstallSnapshot", args, reply)
 		if ok {
 			break
+		}
+		if rf.killed() {
+			return false
 		}
 	}
 	if rf.killed() {
@@ -525,21 +539,26 @@ func (rf *Raft) sendInstallSnapshot(server int, args *InstallSnapshotArgs, reply
 	if reply.Term < rf.currentTerm {
 		rf.mu.Unlock()
 		return false
-	} else if reply.Term > rf.currentTerm {
-		rf.votedFor = -1
-		rf.currentTerm = reply.Term
-		rf.persist()
-		rf.state = FOLLOWER
-		rf.electionTimeout = time.Duration(rand.Intn(MAX_ELECTION_TIMEOUT-MIN_ELECTION_TIMEOUT)+MIN_ELECTION_TIMEOUT) * time.Millisecond
-		rf.timer.Reset(rf.electionTimeout)
-		rf.mu.Unlock()
-		return false
-	} else {
-		if reply.SnapError == InstallSnapshotError_Success {
-			rf.nextIndex[server] = args.LastIncludedIndex + 1
-		} else {
-			rf.nextIndex[server] = rf.lastIncludedIndex + len(rf.logs) + 1
+	} else if reply.SnapError == InstallSnapshotErr_OldIndex {
+		if reply.Term > rf.currentTerm {
+			rf.votedFor = -1
+			rf.currentTerm = reply.Term
+			rf.persist()
+			rf.state = FOLLOWER
+			rf.electionTimeout = time.Duration(rand.Intn(MAX_ELECTION_TIMEOUT-MIN_ELECTION_TIMEOUT)+MIN_ELECTION_TIMEOUT) * time.Millisecond
+			rf.timer.Reset(rf.electionTimeout)
 		}
+		rf.nextIndex[server] = rf.lastIncludedIndex + len(rf.logs) + 1
+	} else if reply.SnapError == InstallSnapshotError_Success {
+		if reply.Term > rf.currentTerm {
+			rf.votedFor = -1
+			rf.currentTerm = reply.Term
+			rf.persist()
+			rf.state = FOLLOWER
+			rf.electionTimeout = time.Duration(rand.Intn(MAX_ELECTION_TIMEOUT-MIN_ELECTION_TIMEOUT)+MIN_ELECTION_TIMEOUT) * time.Millisecond
+			rf.timer.Reset(rf.electionTimeout)
+		}
+		rf.nextIndex[server] = args.LastIncludedIndex + 1
 	}
 	rf.mu.Unlock()
 	return true
@@ -737,11 +756,12 @@ func (rf *Raft) sendAppendEntries(server int, args *AppendEntriesArgs, reply *Ap
 			preCommitIndex := rf.commitIndex
 
 			// rf.commitIndex = rf.nextIndex[server] - 1 ; leader新的commitindex不能这么写
-			// DPrintf("leader is %d, its current commitIndex is : %d", rf.me, rf.commitIndex)
+			//DPrintf("leader is %d, its current commitIndex is : %d, receiver id is : %v", rf.me, rf.commitIndex, server)
 			if rf.lastIncludedIndex == args.LeaderLogLastIndex {
 				rf.commitIndex = args.LeaderCommit
 			} else {
-				newCommitIndex := args.LeaderLogLastIndex
+				newCommitIndex := rf.lastIncludedIndex + len(rf.logs) //不要直接用args.LeaderLogLastIndex，这个值可能会过于老！
+				//DPrintf("newCommitIndex: %v", newCommitIndex)
 				for newCommitIndex > preCommitIndex && newCommitIndex > rf.lastIncludedIndex && rf.logs[newCommitIndex-rf.lastIncludedIndex-1].Term == rf.currentTerm {
 					cnt := 0
 					for i, _ := range rf.peers {
@@ -764,6 +784,7 @@ func (rf *Raft) sendAppendEntries(server int, args *AppendEntriesArgs, reply *Ap
 					}
 					newCommitIndex--
 				}
+				//DPrintf("newCommitIndex: %v, preCommitIndex: %v, rf.lastIncludedIndex: %v", newCommitIndex, preCommitIndex, rf.lastIncludedIndex)
 				if newCommitIndex == preCommitIndex || newCommitIndex == rf.lastIncludedIndex || rf.logs[newCommitIndex-rf.lastIncludedIndex-1].Term == rf.currentTerm {
 					rf.commitIndex = newCommitIndex
 				} else {
@@ -873,10 +894,11 @@ func (rf *Raft) ticker() {
 							LeaderId:          rf.me,
 							LastIncludedIndex: rf.lastIncludedIndex,
 							LastIncludedTerm:  rf.lastIncludedTerm,
-							Data:              rf.snapshotCmd,
+							Data:              rf.persister.ReadSnapshot(),
 						}
 						installSnapshortReply := &InstallSnapshotReply{}
 						go rf.sendInstallSnapshot(i, installSnapshortArgs, installSnapshortReply)
+						continue
 					}
 					appendEntriesArgs := &AppendEntriesArgs{
 						Term:               rf.currentTerm,
@@ -913,15 +935,10 @@ func (rf *Raft) ticker() {
 	}
 }
 func (rf *Raft) applychecker() {
-	for {
-		rf.mu.Lock()
-		/*
-			if rf.killed() {
-				close(rf.applyCh)
-				return
-			}
-		*/
-		for rf.commitIndex <= rf.lastApplied {
+	rf.mu.Lock()
+	defer rf.mu.Unlock()
+	for !rf.killed() {
+		for rf.commitIndex <= rf.lastApplied && rf.snapshotData == nil {
 			/*
 				if rf.killed() {
 					close(rf.applyCh)
@@ -936,19 +953,45 @@ func (rf *Raft) applychecker() {
 				return
 			}
 		*/
-		rf.lastApplied++
-		commitIndex := rf.lastApplied // should commit in index order
-		command := rf.logs[commitIndex-rf.lastIncludedIndex-1].LogDetails
-		commandTerm := rf.logs[commitIndex-rf.lastIncludedIndex-1].Term // 在这里同步，把值都安全地取出来，因为logs是可能在appendEntries中被修改的！！！
-		rf.mu.Unlock()
-		applyMsg := ApplyMsg{
-			CommandValid: true,
-			Command:      command,
-			CommandTerm:  commandTerm,
-			CommandIndex: commitIndex,
+		if rf.snapshotData != nil {
+			applyMsg := ApplyMsg{
+				CommandValid:  false,
+				Snapshot:      rf.snapshotData,
+				SnapshotIndex: rf.snapshotIndex,
+				SnapshotTerm:  rf.snapshotTerm,
+			}
+			rf.snapshotData = nil
+			rf.mu.Unlock()
+			rf.applyCh <- applyMsg
+			rf.mu.Lock()
+		} else {
+			rf.lastApplied++
+			commitIndex := rf.lastApplied // should commit in index order
+			command := rf.logs[commitIndex-rf.lastIncludedIndex-1].LogDetails
+			commandTerm := rf.logs[commitIndex-rf.lastIncludedIndex-1].Term // 在这里同步，把值都安全地取出来，因为logs是可能在appendEntries中被修改的！！！
+			applyMsg := ApplyMsg{
+				CommandValid: true,
+				Command:      command,
+				CommandTerm:  commandTerm,
+				CommandIndex: commitIndex,
+			}
+			rf.mu.Unlock()
+			rf.applyCh <- applyMsg
+			rf.mu.Lock()
 		}
-		rf.applyCh <- applyMsg
+
 	}
+}
+
+/*
+**go中类的方法和成员的可见性都是根据其首字母的大小写来决定的，
+**如果变量名、属性名、函数名或方法名首字母大写，就可以在包外直接访问这些变量、属性、函数和方法，否则只能在包内访问，
+**因此 Go 语言类属性和成员方法的可见性都是包一级的，而不是类一级的。
+ */
+func (rf *Raft) GetRaftStateSize() int {
+	rf.mu.Lock()
+	defer rf.mu.Unlock()
+	return rf.persister.RaftStateSize()
 }
 
 /*
@@ -983,13 +1026,40 @@ func Make(peers []*labrpc.ClientEnd, me int,
 	rand.Seed(time.Now().UnixNano())
 	rf.electionTimeout = time.Duration(rand.Intn(MAX_ELECTION_TIMEOUT-MIN_ELECTION_TIMEOUT)+MIN_ELECTION_TIMEOUT) * time.Millisecond
 	rf.timer = time.NewTicker(rf.electionTimeout)
-	rf.lastIncludedIndex = 0
-	rf.lastIncludedTerm = 0
-	rf.snapshotCmd = make([]byte, 0)
+	rf.snapshotData = nil
+	rf.snapshotIndex = 0
+	rf.snapshotTerm = 0
 	// initialize from state persisted before a crash
 	rf.readPersist(persister.ReadRaftState())
-
+	rf.commitIndex = rf.lastIncludedIndex
+	rf.lastApplied = rf.lastIncludedIndex //不要忘记在这里把commitIndex和lastApplied进行重新赋值
 	go rf.ticker()
 	go rf.applychecker()
 	return rf
+}
+
+//Snapshot 相关，这个是主动做snapshot（server层检查到log太大，向raft层发出的snapshot）
+
+func (rf *Raft) persistStateMachineAndRaftState(kvdata []byte) {
+	w := new(bytes.Buffer)
+	e := labgob.NewEncoder(w)
+	e.Encode(rf.currentTerm)
+	e.Encode(rf.votedFor)
+	e.Encode(rf.logs)
+	e.Encode(rf.lastIncludedIndex)
+	e.Encode(rf.lastIncludedTerm)
+	data := w.Bytes()
+	rf.persister.SaveStateAndSnapshot(data, kvdata)
+}
+
+func (rf *Raft) DoSnapshot(logIndex int, kvdata []byte) {
+	rf.mu.Lock()
+	defer rf.mu.Unlock()
+	if logIndex <= rf.lastIncludedIndex {
+		return
+	}
+	rf.lastIncludedTerm = rf.logs[logIndex-rf.lastIncludedIndex-1].Term
+	rf.logs = append(make([]LogEntry, 0), rf.logs[logIndex-rf.lastIncludedIndex:]...)
+	rf.lastIncludedIndex = logIndex
+	rf.persistStateMachineAndRaftState(kvdata)
 }

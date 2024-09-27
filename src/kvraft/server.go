@@ -1,6 +1,8 @@
 package kvraft
 
 import (
+	"bytes"
+	"fmt"
 	"log"
 	"sync"
 	"sync/atomic"
@@ -39,8 +41,8 @@ type CommandReply struct {
 }
 
 type CommandResult struct {
-	lastCommandID int64
-	commandReply  CommandReply
+	LastCommandID int64
+	CommandReply  CommandReply
 }
 
 type KVServer struct {
@@ -110,8 +112,8 @@ func (kv *KVServer) PutAppend(args *PutAppendArgs, reply *PutAppendReply) {
 		CommandID: args.CommandID,
 	} // 注意这里一定要拷贝一波，不能直接传args的引用到Start中
 	kv.mu.RLock()
-	if lastReply, ok := kv.commandMap[args.ClientID]; ok && lastReply.lastCommandID >= args.CommandID { //要是重复的话，连raft层都没必要传入，直接返回结果就可以
-		reply.Err = Err(lastReply.commandReply.Err)
+	if lastReply, ok := kv.commandMap[args.ClientID]; ok && lastReply.LastCommandID >= args.CommandID { //要是重复的话，连raft层都没必要传入，直接返回结果就可以
+		reply.Err = Err(lastReply.CommandReply.Err)
 		kv.mu.RUnlock()
 		return
 	}
@@ -160,7 +162,7 @@ func (kv *KVServer) killed() bool {
 
 func (kv *KVServer) checkCommandID(curCommandID int64, clientID int64) bool { // return true means overlap request
 	recordMaxCommand, ok := kv.commandMap[clientID]
-	return ok && recordMaxCommand.lastCommandID >= curCommandID
+	return ok && recordMaxCommand.LastCommandID >= curCommandID
 }
 
 func (kv *KVServer) applyToServerStateMachine(op Op) CommandReply {
@@ -175,19 +177,19 @@ func (kv *KVServer) applyToServerStateMachine(op Op) CommandReply {
 		}
 	} else if op.OpType == "Put" {
 		if kv.checkCommandID(op.CommandID, op.ClientID) {
-			commandReply = kv.commandMap[op.ClientID].commandReply
+			commandReply = kv.commandMap[op.ClientID].CommandReply
 		} else {
 			kv.kvdata[op.Key] = op.Value
 			commandReply.Err = PutAppendOK
 			commandResult := CommandResult{
-				lastCommandID: op.CommandID,
-				commandReply:  commandReply,
+				LastCommandID: op.CommandID,
+				CommandReply:  commandReply,
 			}
 			kv.commandMap[op.ClientID] = commandResult
 		}
 	} else {
 		if kv.checkCommandID(op.CommandID, op.ClientID) {
-			commandReply = kv.commandMap[op.ClientID].commandReply
+			commandReply = kv.commandMap[op.ClientID].CommandReply
 		} else {
 			_, ok := kv.kvdata[op.Key]
 			if !ok {
@@ -197,13 +199,18 @@ func (kv *KVServer) applyToServerStateMachine(op Op) CommandReply {
 			}
 			commandReply.Err = PutAppendOK
 			commandResult := CommandResult{
-				lastCommandID: op.CommandID,
-				commandReply:  commandReply,
+				LastCommandID: op.CommandID,
+				CommandReply:  commandReply,
 			}
 			kv.commandMap[op.ClientID] = commandResult
 		}
 	}
 	return commandReply
+}
+
+func (kv *KVServer) startSnapshot(snapshotLastIndex int) {
+	serverdata := kv.encodeSnapshot()
+	go kv.rf.DoSnapshot(snapshotLastIndex, serverdata)
 }
 
 func (kv *KVServer) processApplyFromRaft() {
@@ -221,14 +228,18 @@ func (kv *KVServer) processApplyFromRaft() {
 				var term int
 				var isLeader bool
 				term, isLeader = kv.rf.GetState()
-				if (!isLeader) || term != applyData.CommandTerm {
-					kv.mu.Unlock()
-					continue
+				if isLeader && term == applyData.CommandTerm {
+					logIndex := applyData.CommandIndex
+					ch := kv.getNotifyChan(logIndex)
+					ch <- commandReply
 				}
-				logIndex := applyData.CommandIndex
-				ch := kv.getNotifyChan(logIndex)
-				ch <- commandReply
+				ifSnapshot := kv.checkSnapshot()
+				if ifSnapshot {
+					kv.startSnapshot(applyData.CommandIndex) //注意这个操作每个server都是有可能主动snapshot的！！！
+				}
 				kv.mu.Unlock()
+			} else {
+				kv.decodeKVSnapshot(applyData.Snapshot)
 			}
 		}
 	}
@@ -263,7 +274,44 @@ func StartKVServer(servers []*labrpc.ClientEnd, me int, persister *raft.Persiste
 	kv.rf = raft.Make(servers, me, persister, kv.applyCh)
 
 	// You may need initialization code here.
+	kv.decodeKVSnapshot(persister.ReadSnapshot()) // 刚boot或者reboot的时候也需要读取快照，如果之前有快照数据的话就要进行读入
 	go kv.processApplyFromRaft()
 
 	return kv
+}
+
+// snapshot相关
+func (kv *KVServer) checkSnapshot() bool {
+	if kv.maxraftstate == -1 {
+		return false
+	}
+	return kv.rf.GetRaftStateSize() >= kv.maxraftstate
+}
+
+func (kv *KVServer) encodeSnapshot() []byte {
+	w := new(bytes.Buffer)
+	e := labgob.NewEncoder(w)
+	e.Encode(kv.commandMap)
+	e.Encode(kv.kvdata)
+	data := w.Bytes()
+	return data
+}
+
+func (kv *KVServer) decodeKVSnapshot(snapshotKVData []byte) {
+	if snapshotKVData == nil || len(snapshotKVData) < 1 { // bootstrap without any state?
+		return
+	}
+	r := bytes.NewBuffer(snapshotKVData)
+	d := labgob.NewDecoder(r)
+	var commandMap map[int64]CommandResult
+	var kvdata map[string]string
+	if d.Decode(&commandMap) != nil ||
+		d.Decode(&kvdata) != nil {
+		fmt.Println("decode error!!!")
+	} else {
+		kv.mu.Lock()
+		defer kv.mu.Unlock()
+		kv.commandMap = commandMap
+		kv.kvdata = kvdata
+	}
 }
