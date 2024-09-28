@@ -55,9 +55,10 @@ type KVServer struct {
 	maxraftstate int // snapshot if log grows this big
 
 	// Your definitions here.
-	commandMap map[int64]CommandResult
-	notifyChan map[int]chan CommandReply //log index为key
-	kvdata     map[string]string
+	commandMap  map[int64]CommandResult
+	notifyChan  map[int]chan CommandReply //log index为key
+	kvdata      map[string]string
+	lastApplied int // 注意这里需要有lastApplied，因为需要和到server的快照进行比较，如果是老的快照数据应该丢弃
 }
 
 func (kv *KVServer) getNotifyChan(logIndex int) chan CommandReply {
@@ -84,7 +85,7 @@ func (kv *KVServer) Get(args *GetArgs, reply *GetReply) {
 	}
 	kv.mu.Lock()
 	ch := kv.getNotifyChan(index) // 相当于让get chan的这一步原子
-	kv.mu.Unlock()
+	kv.mu.Unlock()                //select前一定要先解锁！
 	select {
 	case commandReply := <-ch:
 		reply.Err = Err(commandReply.Err)
@@ -223,6 +224,10 @@ func (kv *KVServer) processApplyFromRaft() {
 			if applyData.CommandValid {
 				kv.mu.Lock()
 				op := applyData.Command.(Op)
+				if kv.lastApplied >= applyData.CommandIndex {
+					kv.mu.Unlock()
+					continue
+				}
 				// apply statemachine这个操作是每个server都需要的！
 				commandReply := kv.applyToServerStateMachine(op)
 				var term int
@@ -231,7 +236,10 @@ func (kv *KVServer) processApplyFromRaft() {
 				if isLeader && term == applyData.CommandTerm {
 					logIndex := applyData.CommandIndex
 					ch := kv.getNotifyChan(logIndex)
-					ch <- commandReply
+					kv.lastApplied = applyData.CommandIndex
+					kv.mu.Unlock()
+					ch <- commandReply // 这里一定要解锁，不然会阻塞
+					kv.mu.Lock()
 				}
 				ifSnapshot := kv.checkSnapshot()
 				if ifSnapshot {
@@ -239,7 +247,12 @@ func (kv *KVServer) processApplyFromRaft() {
 				}
 				kv.mu.Unlock()
 			} else {
-				kv.decodeKVSnapshot(applyData.Snapshot)
+				kv.mu.Lock()
+				if kv.lastApplied <= applyData.SnapshotIndex {
+					kv.decodeKVSnapshot(applyData.Snapshot)
+					kv.lastApplied = applyData.SnapshotIndex
+				}
+				kv.mu.Unlock()
 			}
 		}
 	}
@@ -272,7 +285,7 @@ func StartKVServer(servers []*labrpc.ClientEnd, me int, persister *raft.Persiste
 	kv.kvdata = make(map[string]string)
 	kv.applyCh = make(chan raft.ApplyMsg)
 	kv.rf = raft.Make(servers, me, persister, kv.applyCh)
-
+	kv.lastApplied = 0
 	// You may need initialization code here.
 	kv.decodeKVSnapshot(persister.ReadSnapshot()) // 刚boot或者reboot的时候也需要读取快照，如果之前有快照数据的话就要进行读入
 	go kv.processApplyFromRaft()
@@ -309,8 +322,6 @@ func (kv *KVServer) decodeKVSnapshot(snapshotKVData []byte) {
 		d.Decode(&kvdata) != nil {
 		fmt.Println("decode error!!!")
 	} else {
-		kv.mu.Lock()
-		defer kv.mu.Unlock()
 		kv.commandMap = commandMap
 		kv.kvdata = kvdata
 	}

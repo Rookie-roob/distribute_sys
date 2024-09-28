@@ -614,20 +614,18 @@ func (rf *Raft) AppendEntries(args *AppendEntriesArgs, reply *AppendEntriesReply
 	rf.state = FOLLOWER
 	rf.electionTimeout = time.Duration(rand.Intn(MAX_ELECTION_TIMEOUT-MIN_ELECTION_TIMEOUT)+MIN_ELECTION_TIMEOUT) * time.Millisecond
 	rf.timer.Reset(rf.electionTimeout)
-	/*
-		if len(args.Entries) != 0 {
-			DPrintf("server[%d] reveive a correct message from server[%d]", rf.me, args.LeaderId)
-			DPrintf("args.PrevLogIndex : %d, args.PrevLogTerm: %d", args.PrevLogIndex, args.PrevLogTerm)
-			if args.PrevLogIndex >= rf.lastIncludedIndex+len(rf.logs)+1 {
-				DPrintf("receiver do not have such log in that index")
-				DPrintf("receiver's log len: %d", rf.lastIncludedIndex+len(rf.logs))
-			} else if args.PrevLogIndex == rf.lastIncludedIndex {
-				DPrintf("receiver relevant log term: from the beggining")
-			} else {
-				DPrintf("receiver relevant log term: %d", rf.logs[args.PrevLogIndex-rf.lastIncludedIndex-1].Term)
-			}
+	if len(args.Entries) != 0 {
+		DPrintf("server[%d] reveive a correct message from server[%d]", rf.me, args.LeaderId)
+		DPrintf("args.PrevLogIndex : %d, args.PrevLogTerm: %d", args.PrevLogIndex, args.PrevLogTerm)
+		if args.PrevLogIndex >= rf.lastIncludedIndex+len(rf.logs)+1 {
+			DPrintf("receiver do not have such log in that index")
+			DPrintf("receiver's log len: %d", rf.lastIncludedIndex+len(rf.logs))
+		} else if args.PrevLogIndex == rf.lastIncludedIndex {
+			DPrintf("receiver relevant log term: from the beggining")
+		} else {
+			DPrintf("receiver relevant log term: %d", rf.logs[args.PrevLogIndex-rf.lastIncludedIndex-1].Term)
 		}
-	*/
+	}
 	if args.PrevLogIndex > rf.lastIncludedIndex+len(rf.logs) {
 		rf.persist()
 		reply.Success = false
@@ -1023,9 +1021,6 @@ func Make(peers []*labrpc.ClientEnd, me int,
 	rf.matchIndex = []int{}
 	rf.cond = *sync.NewCond(&rf.mu)
 	rf.applyCh = applyCh
-	rand.Seed(time.Now().UnixNano())
-	rf.electionTimeout = time.Duration(rand.Intn(MAX_ELECTION_TIMEOUT-MIN_ELECTION_TIMEOUT)+MIN_ELECTION_TIMEOUT) * time.Millisecond
-	rf.timer = time.NewTicker(rf.electionTimeout)
 	rf.snapshotData = nil
 	rf.snapshotIndex = 0
 	rf.snapshotTerm = 0
@@ -1033,6 +1028,9 @@ func Make(peers []*labrpc.ClientEnd, me int,
 	rf.readPersist(persister.ReadRaftState())
 	rf.commitIndex = rf.lastIncludedIndex
 	rf.lastApplied = rf.lastIncludedIndex //不要忘记在这里把commitIndex和lastApplied进行重新赋值
+	rand.Seed(time.Now().UnixNano())
+	rf.electionTimeout = time.Duration(rand.Intn(MAX_ELECTION_TIMEOUT-MIN_ELECTION_TIMEOUT)+MIN_ELECTION_TIMEOUT) * time.Millisecond
+	rf.timer = time.NewTicker(rf.electionTimeout)
 	go rf.ticker()
 	go rf.applychecker()
 	return rf
