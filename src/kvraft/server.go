@@ -25,9 +25,6 @@ func DPrintf(format string, a ...interface{}) (n int, err error) {
 }
 
 type Op struct {
-	// Your definitions here.
-	// Field names must start with capital letters,
-	// otherwise RPC will break.
 	OpType    string
 	Key       string
 	Value     string
@@ -36,8 +33,12 @@ type Op struct {
 }
 
 type CommandReply struct {
-	Value string
-	Err   string
+	ClientID  int64
+	CommandID int64
+	OpType    string
+	Key       string
+	Value     string
+	Err       string
 }
 
 type CommandResult struct {
@@ -46,7 +47,7 @@ type CommandResult struct {
 }
 
 type KVServer struct {
-	mu      sync.RWMutex
+	mu      sync.Mutex
 	me      int
 	rf      *raft.Raft
 	applyCh chan raft.ApplyMsg
@@ -69,6 +70,17 @@ func (kv *KVServer) getNotifyChan(logIndex int) chan CommandReply {
 	return kv.notifyChan[logIndex]
 }
 
+func (kv *KVServer) ifModifyOpSame(origin_op Op, new_op CommandReply) bool {
+	return origin_op.Key == new_op.Key && origin_op.Value == new_op.Value &&
+		origin_op.OpType == new_op.OpType && origin_op.ClientID == new_op.ClientID &&
+		origin_op.CommandID == new_op.CommandID
+}
+
+func (kv *KVServer) ifGetOpSame(origin_op Op, new_op CommandReply) bool {
+	return origin_op.Key == new_op.Key && origin_op.CommandID == new_op.CommandID &&
+		origin_op.OpType == new_op.OpType && origin_op.ClientID == new_op.ClientID
+}
+
 func (kv *KVServer) Get(args *GetArgs, reply *GetReply) {
 	// Your code here.
 	op := Op{
@@ -88,9 +100,15 @@ func (kv *KVServer) Get(args *GetArgs, reply *GetReply) {
 	kv.mu.Unlock()                //select前一定要先解锁！
 	select {
 	case commandReply := <-ch:
-		reply.Err = Err(commandReply.Err)
-		reply.Value = commandReply.Value
-		reply.LeaderID = kv.me
+		if kv.ifGetOpSame(op, commandReply) { //这里要和原来的op进行比较，可能传上来的不是同一个！
+			reply.Err = Err(commandReply.Err)
+			kv.mu.Lock()
+			reply.Value = kv.kvdata[op.Key]
+			kv.mu.Unlock()
+			reply.LeaderID = kv.me
+		} else {
+			reply.Err = GetErrWrongLeader
+		}
 	case <-time.After(time.Duration(RequstTimeout) * time.Millisecond):
 		reply.Err = GetErrTimeout
 		reply.Value = ""
@@ -112,13 +130,13 @@ func (kv *KVServer) PutAppend(args *PutAppendArgs, reply *PutAppendReply) {
 		ClientID:  args.ClientID,
 		CommandID: args.CommandID,
 	} // 注意这里一定要拷贝一波，不能直接传args的引用到Start中
-	kv.mu.RLock()
+	kv.mu.Lock()
 	if lastReply, ok := kv.commandMap[args.ClientID]; ok && lastReply.LastCommandID >= args.CommandID { //要是重复的话，连raft层都没必要传入，直接返回结果就可以
 		reply.Err = Err(lastReply.CommandReply.Err)
-		kv.mu.RUnlock()
+		kv.mu.Unlock()
 		return
 	}
-	kv.mu.RUnlock()
+	kv.mu.Unlock()
 	index, _, isLeader := kv.rf.Start(op)
 	if !isLeader {
 		reply.Err = PutAppendErrWrongLeader
@@ -129,8 +147,12 @@ func (kv *KVServer) PutAppend(args *PutAppendArgs, reply *PutAppendReply) {
 	kv.mu.Unlock()
 	select {
 	case commandReply := <-ch:
-		reply.Err = Err(commandReply.Err)
-		reply.LeaderID = kv.me
+		if kv.ifModifyOpSame(op, commandReply) {
+			reply.Err = Err(commandReply.Err)
+			reply.LeaderID = kv.me
+		} else {
+			reply.Err = PutAppendErrWrongLeader
+		}
 	case <-time.After(time.Duration(RequstTimeout) * time.Millisecond):
 		reply.Err = PutAppendErrTimeout
 	}
@@ -167,7 +189,14 @@ func (kv *KVServer) checkCommandID(curCommandID int64, clientID int64) bool { //
 }
 
 func (kv *KVServer) applyToServerStateMachine(op Op) CommandReply {
-	commandReply := CommandReply{}
+	commandReply := CommandReply{
+		ClientID:  op.ClientID,
+		CommandID: op.CommandID,
+		OpType:    op.OpType,
+		Key:       op.Key,
+		Value:     op.Value,
+		Err:       "",
+	}
 	if op.OpType == "Get" {
 		var ok bool
 		commandReply.Value, ok = kv.kvdata[op.Key]

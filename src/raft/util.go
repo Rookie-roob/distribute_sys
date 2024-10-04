@@ -25,3 +25,11 @@ func Max(x, y int) int {
 	}
 	return x
 }
+
+func sendToChan(ch chan bool) {
+	select {
+	case <-ch:
+	default:
+	} // 旧的消息还没被拿出来，但是新的消息已经来了，直接以新的消息为主去刷新vote过期
+	ch <- true
+}
